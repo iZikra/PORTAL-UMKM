@@ -13,6 +13,9 @@
         @csrf
         @method('put')
 
+        {{-- TAMBAHKAN INPUT USERNAME TERSEMBUNYI DI SINI --}}
+        <input autocomplete="username" id="username" name="username" type="hidden" value="{{ $user->email }}">
+
         <div>
             <x-input-label for="update_password_current_password" :value="__('Current Password')" />
             <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
@@ -39,9 +42,11 @@
                     x-data="{ show: true }"
                     x-show="show"
                     x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600 dark:text-gray-400"
-                >{{ __('Saved.') }}</p>
+                    x-init="setTimeout(() => show = false, 7000)"
+                    class="text-sm font-medium text-green-600 dark:text-green-400"
+                >
+                    {{ __('Kata sandi berhasil disimpan.') }}
+                </p>
             @endif
         </div>
     </form>

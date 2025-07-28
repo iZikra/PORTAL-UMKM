@@ -16,7 +16,7 @@
         
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div class="min-h-screen bg-white dark:bg-gray-800">
             @include('components.layouts.navigation')
 
             <!-- Page Heading -->
@@ -29,7 +29,7 @@
             @endisset
 
             <!-- Page Content -->
-            <main>
+            <main class="fade-in">
                 {{ $slot }}
             </main>
         </div>

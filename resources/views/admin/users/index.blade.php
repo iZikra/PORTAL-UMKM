@@ -20,19 +20,23 @@
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama Pemilik</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama Usaha</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
+                                    {{-- TAMBAHKAN KOLOM HEADER BARU --}}
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Kabupaten/Kota</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Sektor Usaha</th>
                                     <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 @forelse ($users as $user)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $loop->iteration }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $user->name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $user->nama_usaha }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $user->email }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $user->sektor_usaha }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $loop->iteration }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $user->name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $user->nama_usaha }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $user->email }}</td>
+                                        {{-- TAMBAHKAN DATA KABUPATEN DI SINI --}}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $user->alamat_kota }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $user->sektor_usaha }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
                                                 {{ $user->role == 'admin' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">
                                                 {{ $user->role }}
@@ -41,7 +45,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                        <td colspan="7" class="px-6 py-4 text-center text-gray-500">
                                             Belum ada pengguna yang terdaftar.
                                         </td>
                                     </tr>

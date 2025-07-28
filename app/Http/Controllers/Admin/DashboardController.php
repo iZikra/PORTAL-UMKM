@@ -4,39 +4,41 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pengaduan;
+use App\Models\User; // <-- Pastikan model User di-import
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        // Menghitung total pengaduan
+        // --- Data untuk Kartu Statistik ---
+        $totalPengguna = User::count(); // <-- KODE YANG HILANG SEBELUMNYA
         $totalPengaduan = Pengaduan::count();
-
-        // Menghitung pengaduan berdasarkan status
         $pengaduanBaru = Pengaduan::where('status', 'Baru')->count();
         $pengaduanDiproses = Pengaduan::where('status', 'Diproses')->count();
         $pengaduanSelesai = Pengaduan::where('status', 'Selesai')->count();
-        // PERBAIKAN: Menambahkan perhitungan untuk status 'Ditolak'
         $pengaduanDitolak = Pengaduan::where('status', 'Ditolak')->count();
 
-        // Mengambil data untuk grafik kategori
-        $kategoriData = Pengaduan::select('kategori', DB::raw('count(*) as total'))
+        // --- Data untuk Grafik (Chart.js) ---
+        // Kode ini saya perbaiki juga agar lebih akurat mengambil nama kategori
+        $kategoriData = Pengaduan::query()
+            ->select('kategori', DB::raw('count(*) as total'))
             ->groupBy('kategori')
-            ->pluck('total', 'kategori');
-        
-        // Menyiapkan data untuk Chart.js
-        $chartLabels = $kategoriData->keys();
-        $chartData = $kategoriData->values();
+            ->get();
 
-        // Mengirim semua data ke view, termasuk data baru
+        $chartLabels = $kategoriData->pluck('kategori');
+        $chartData = $kategoriData->pluck('total');
+
+        // Mengirim semua data ke view
         return view('admin.dashboard', compact(
+            'totalPengguna', // <-- Sekarang variabel ini sudah ada
             'totalPengaduan',
             'pengaduanBaru',
             'pengaduanDiproses',
             'pengaduanSelesai',
-            'pengaduanDitolak', // PERBAIKAN: Mengirim variabel baru ke view
+            'pengaduanDitolak',
             'chartLabels',
             'chartData'
         ));
