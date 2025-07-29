@@ -19,7 +19,7 @@
                     <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
                             <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                                <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126z" />
                                 </svg>
                             </div>
@@ -48,44 +48,35 @@
         </div>
     </div>
     {{-- ====================================================== --}}
-    {{--                AKHIR DARI KOMPONEN MODAL                 --}}
-    {{-- ====================================================== --}}
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-xl font-semibold">Daftar FAQ</h3>
                         <a href="{{ route('admin.faq.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
                             Tambah FAQ Baru
                         </a>
                     </div>
-
                     @if(session('success'))
                         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded-lg shadow-md relative mb-4" role="alert">
                             <span>{{ session('success') }}</span>
                         </div>
                     @endif
-
                     <div class="space-y-8 mt-4">
                         @forelse($faqs as $faq)
                             <div class="border-b pb-4">
                                 <h4 class="text-lg font-semibold text-gray-800">{{ $faq->pertanyaan }}</h4>
                                 <p class="mt-2 text-gray-600">{{ $faq->jawaban }}</p>
-                                @auth
-                                    @if(Auth::user()->role == 'admin')
-                                        <div class="mt-4 text-right space-x-2">
-                                            <a href="{{ route('admin.faq.edit', $faq->id) }}" class="text-sm text-indigo-600 hover:text-indigo-900 font-medium">Edit</a>
-                                            
-                                            {{-- TOMBOL HAPUS BARU: Memicu Modal --}}
-                                            <button @click="showModal = true; deleteUrl = '{{ route('admin.faq.destroy', $faq->id) }}'" type="button" class="text-sm text-red-600 hover:text-red-900 font-medium">
-                                                Hapus
-                                            </button>
-                                        </div>
-                                    @endif
-                                @endauth
+                                <div class="mt-4 text-right space-x-4">
+                                    <a href="{{ route('admin.faq.edit', $faq->id) }}" class="text-sm text-indigo-600 hover:text-indigo-900 font-medium">Edit</a>
+                                    
+                                    {{-- TOMBOL HAPUS BARU: Memicu Modal --}}
+                                    <button @click="showModal = true; deleteUrl = '{{ route('admin.faq.destroy', $faq->id) }}'" type="button" class="text-sm text-red-600 hover:text-red-900 font-medium">
+                                        Hapus
+                                    </button>
+                                </div>
                             </div>
                         @empty
                             <p class="text-center text-gray-500">Belum ada FAQ yang tersedia.</p>

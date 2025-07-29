@@ -39,9 +39,15 @@
                     @endif
                     {{-- ====================================================== --}}
 
-                    <x-nav-link :href="route('faq')" :active="request()->routeIs('faq')">
-                        {{ __('FAQ') }}
-                    </x-nav-link>
+                    @if(Auth::user()->role == 'admin')
+                        <x-nav-link :href="route('admin.faq.index')" :active="request()->routeIs('admin.faq.*')">
+                            {{ __('Manajemen FAQ') }}
+                        </x-nav-link>
+                    @else
+                        <x-nav-link :href="route('faq')" :active="request()->routeIs('faq')">
+                            {{ __('FAQ') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 

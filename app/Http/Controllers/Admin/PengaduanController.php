@@ -14,33 +14,28 @@ class PengaduanController extends Controller
      * Menampilkan semua pengaduan dengan fitur filter dan pencarian.
      */
     public function index(Request $request)
-    {
-        $query = Pengaduan::query();
+{
+    $query = Pengaduan::query();
 
-        // Terapkan filter pencarian jika ada input 'search'
-        if ($request->filled('search')) {
-            $search = $request->input('search');
-            // PERUBAHAN: Pencarian sekarang hanya mencakup 'nama_usaha' dan 'kategori'
-            $query->where(function($q) use ($search) {
-                $q->where('nama_usaha', 'like', "%{$search}%")
-                  ->orWhere('kategori', 'like', "%{$search}%");
-            });
-        }
-
-        // Terapkan filter status jika ada input 'status'
-        if ($request->filled('status')) {
-            $query->where('status', $request->input('status'));
-        }
-
-        $pengaduans = $query->latest()->get();
-
-        return view('admin.pengaduan.index', [
-            'pengaduans' => $pengaduans,
-            'search' => $request->input('search'),
-            'status' => $request->input('status'),
-        ]);
+    // Terapkan filter pencarian jika ada
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('nama_usaha', 'like', "%{$search}%")
+              ->orWhere('kategori', 'like', "%{$search}%");
+        });
     }
 
+    // Terapkan filter status jika ada
+    if ($request->filled('status')) {
+        $query->where('status', $request->input('status'));
+    }
+
+    // Selalu gunakan paginate di akhir dan tambahkan filter ke link pagination
+    $pengaduans = $query->latest()->paginate(10)->withQueryString();
+
+    return view('admin.pengaduan.index', compact('pengaduans'));
+}
     /**
      * Menampilkan detail satu pengaduan.
      */
@@ -53,23 +48,34 @@ class PengaduanController extends Controller
      * Menyimpan tanggapan dan/atau mengubah status pengaduan.
      */
     public function tanggapi(Request $request, Pengaduan $pengaduan)
-    {
-        $request->validate([
-            'status' => 'required|in:Baru,Diproses,Selesai,Ditolak',
-            'tanggapan' => 'nullable|string|min:5',
+{
+    $request->validate([
+        'status' => 'required|in:Baru,Diproses,Selesai,Ditolak',
+        'tanggapan' => 'nullable|string|min:3',
+    ]);
+
+    // 1. Update status pengaduan
+    $pengaduan->update(['status' => $request->input('status')]);
+
+    // 2. Simpan tanggapan jika ada
+    if ($request->filled('tanggapan')) {
+        $pengaduan->tanggapans()->create([
+            'user_id' => auth()->id(),
+            'tanggapan' => $request->input('tanggapan'),
         ]);
-
-        $pengaduan->status = $request->status;
-        $pengaduan->save();
-
-        if ($request->filled('tanggapan')) {
-            Tanggapan::create([
-                'pengaduan_id' => $pengaduan->id,
-                'user_id' => Auth::id(),
-                'tanggapan' => $request->tanggapan,
-            ]);
-        }
-
-        return redirect()->route('admin.pengaduan.show', $pengaduan)->with('success', 'Status pengaduan berhasil diperbarui!');
     }
+
+    // 3. Bangun parameter untuk redirect berdasarkan filter LAMA
+    $filterParams = [
+        'search' => $request->input('search'),
+        'status' => $request->input('filter_status') // Menggunakan 'filter_status' dari hidden input
+    ];
+    
+    // 4. Hapus parameter yang kosong
+    $filterParams = array_filter($filterParams);
+
+    // 5. Redirect ke halaman DAFTAR PENGADUAN dengan filter LAMA
+    return redirect()->route('admin.pengaduan.index', $filterParams)
+                     ->with('success', 'Perubahan pada pengaduan berhasil disimpan!');
+}
 }

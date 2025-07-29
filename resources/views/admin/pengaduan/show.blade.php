@@ -5,60 +5,44 @@
         </h2>
     </x-slot>
 
-    {{-- ================================================================== --}}
-    {{-- BAGIAN POP-UP (MODAL) UNTUK PESAN SUKSES --}}
-    {{-- ================================================================== --}}
-    @if (session('success'))
-        <div 
-            x-data="{ show: true }" 
-            x-show="show"
-            x-transition:enter="ease-out duration-300"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
-            x-transition:leave="ease-in duration-200"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            class="fixed inset-0 bg-gray-900 bg-opacity-60 flex items-center justify-center z-50 px-4"
-            style="display: none;"
-        >
-            <div 
-                @click.away="show = false"
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-sm mx-auto text-center"
-            >
-                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-                    <svg class="h-6 w-6 text-green-600" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                </div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-100 mt-4">Perubahan Disimpan!</h3>
-                <div class="mt-2 px-7 py-3">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                        {{ session('success') }}
-                    </p>
-                </div>
-                <div class="mt-4">
-                    <button 
-                        @click="show = false"
-                        type="button" 
-                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:text-sm"
-                    >
-                        Mengerti
-                    </button>
-                </div>
-            </div>
-        </div>
-    @endif
-    {{-- ================================================================== --}}
-    {{-- AKHIR DARI BAGIAN POP-UP --}}
-    {{-- ================================================================== --}}
-
     <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8 space-y-6">
+            
+            {{-- ================================================================== --}}
+            {{-- BAGIAN BANNER NOTIFIKASI BARU --}}
+            {{-- ================================================================== --}}
+            @if (session('success'))
+                <div 
+                    x-data="{ show: true }"
+                    x-show="show"
+                    x-transition
+                    x-init="setTimeout(() => show = false, 5000)"
+                    class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg shadow-md"
+                    role="alert"
+                >
+                    <div class="flex">
+                        <div class="py-1">
+                            <svg class="h-6 w-6 text-green-500 mr-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="font-bold">Perubahan Disimpan!</p>
+                            <p class="text-sm">{{ session('success') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            {{-- ================================================================== --}}
+            {{-- AKHIR DARI BAGIAN BANNER --}}
+            {{-- ================================================================== --}}
+
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 md:p-8 text-gray-900 dark:text-gray-100 space-y-6">
 
                     <div class="mb-6">
-                        <a href="{{ route('admin.pengaduan.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 focus:outline-none focus:border-gray-700 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">
+                        {{-- TOMBOL KEMBALI YANG SUDAH DIPERBAIKI --}}
+                        <a href="{{ route('admin.pengaduan.index', request()->only(['search', 'status'])) }}" class="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 focus:outline-none focus:border-gray-700 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">
                             &larr; Kembali ke Daftar Pengaduan
                         </a>
                     </div>
@@ -118,14 +102,18 @@
                     <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
                         <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 pb-2">Beri Tanggapan & Update</h3>
                         
+                        {{-- FORM DENGAN INPUT HIDDEN UNTUK FILTER --}}
                         <form method="POST" action="{{ route('admin.pengaduan.tanggapi', $pengaduan) }}">
                             @csrf
                             @method('PATCH')
 
-                            <!-- Update Status -->
+                            {{-- Input tersembunyi untuk MENYIMPAN filter LAMA --}}
+                            <input type="hidden" name="search" value="{{ request('search') }}">
+                            <input type="hidden" name="filter_status" value="{{ request('status') }}">
+
                             <div class="mt-4">
-                                <label for="status" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Ubah Status') }}</label>
-                                <select id="status" name="status" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm" required>
+                                <label for="status_select" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Ubah Status') }}</label>
+                                <select id="status_select" name="status" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm" required>
                                     <option value="Baru" {{ $pengaduan->status == 'Baru' ? 'selected' : '' }}>Baru</option>
                                     <option value="Diproses" {{ $pengaduan->status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
                                     <option value="Selesai" {{ $pengaduan->status == 'Selesai' ? 'selected' : '' }}>Selesai</option>
@@ -133,7 +121,6 @@
                                 </select>
                             </div>
 
-                            <!-- Tanggapan Admin -->
                             <div class="mt-4">
                                 <label for="tanggapan" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Tulis Tanggapan (Opsional)') }}</label>
                                 <textarea id="tanggapan" name="tanggapan" rows="5" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm"></textarea>

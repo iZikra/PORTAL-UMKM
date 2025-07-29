@@ -33,7 +33,7 @@ class PengaduanController extends Controller
             'alamat_usaha' => 'required|string',
             'judul' => 'required|string|max:255',
             'kategori' => 'required|string',
-            'deskripsi' => 'required|string|min:10',
+            'deskripsi' => 'required|string|min:3',
         ]);
 
         $pengaduan = Pengaduan::create([

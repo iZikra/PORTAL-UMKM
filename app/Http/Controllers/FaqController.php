@@ -27,8 +27,9 @@ class FaqController extends Controller
      */
     public function index()
     {
-        $faqs = Faq::latest()->get();
-        return view('faq.index', compact('faqs'));
+    $faqs = Faq::latest()->get();
+    // Mengarahkan ke view yang benar di dalam folder admin
+    return view('admin.faq.index', compact('faqs'));
     }
 
     /**
@@ -36,7 +37,7 @@ class FaqController extends Controller
      */
     public function create()
     {
-        return view('faq.create');
+    return view('admin.faq.create');
     }
 
     /**
@@ -54,7 +55,7 @@ class FaqController extends Controller
      */
     public function edit(Faq $faq)
     {
-        return view('faq.edit', compact('faq'));
+        return view('admin.faq.edit', compact('faq'));
     }
 
     /**
