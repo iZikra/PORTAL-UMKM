@@ -1,9 +1,19 @@
-<x-layouts.app>
-    <x-slot name="header">
+<?php if (isset($component)) { $__componentOriginal5863877a5171c196453bfa0bd807e410 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal5863877a5171c196453bfa0bd807e410 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.layouts.app','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('layouts.app'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+     <?php $__env->slot('header', null, []); ?> 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Manajemen FAQ') }}
+            <?php echo e(__('Manajemen FAQ')); ?>
+
         </h2>
-    </x-slot>
+     <?php $__env->endSlot(); ?>
 
     <!-- ====================================================== -->
     <!--    KOMPONEN MODAL KONFIRMASI HAPUS (DENGAN ALPINE.JS)   -->
@@ -33,10 +43,10 @@
                         </div>
                     </div>
                     <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                        {{-- PERUBAHAN: Form action sekarang menggunakan variabel deleteUrl --}}
+                        
                         <form :action="deleteUrl" method="POST" class="inline-block">
-                            @csrf
-                            @method('DELETE')
+                            <?php echo csrf_field(); ?>
+                            <?php echo method_field('DELETE'); ?>
                             <button type="submit" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">
                                 Ya, Hapus
                             </button>
@@ -57,26 +67,26 @@
                 <div class="p-6 text-gray-900">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-xl font-semibold">Daftar FAQ</h3>
-                        <a href="{{ route('admin.faq.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
+                        <a href="<?php echo e(route('admin.faq.create')); ?>" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
                             Tambah FAQ Baru
                         </a>
                     </div>
-                    @if(session('success'))
+                    <?php if(session('success')): ?>
                         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 px-4 py-3 rounded-lg shadow-md relative mb-4" role="alert">
-                            <span>{{ session('success') }}</span>
+                            <span><?php echo e(session('success')); ?></span>
                         </div>
-                    @endif
+                    <?php endif; ?>
                     <div class="space-y-8 mt-4">
-                        @forelse($faqs as $faq)
+                        <?php $__empty_1 = true; $__currentLoopData = $faqs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $faq): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                             <div class="border-b pb-4">
-                                <h4 class="text-lg font-semibold text-gray-800">{{ $faq->pertanyaan }}</h4>
-                                <p class="mt-2 text-gray-600">{{ $faq->jawaban }}</p>
+                                <h4 class="text-lg font-semibold text-gray-800"><?php echo e($faq->pertanyaan); ?></h4>
+                                <p class="mt-2 text-gray-600"><?php echo e($faq->jawaban); ?></p>
                                 <div class="mt-4 text-right space-x-4">
-                                    <a href="{{ route('admin.faq.edit', $faq->id) }}" class="text-sm text-indigo-600 hover:text-indigo-900 font-medium">Edit</a>
+                                    <a href="<?php echo e(route('admin.faq.edit', $faq->id)); ?>" class="text-sm text-indigo-600 hover:text-indigo-900 font-medium">Edit</a>
                                     
-                                    {{-- PERUBAHAN: Memisahkan logika. Tombol ini sekarang hanya membuka modal dan mengatur URL. --}}
+                                    
                                     <button 
-                                        @click="showModal = true; deleteUrl = '{{ route('admin.faq.destroy', $faq->id) }}'" 
+                                        @click="showModal = true; deleteUrl = '<?php echo e(route('admin.faq.destroy', $faq->id)); ?>'" 
                                         type="button" 
                                         class="text-sm text-red-600 hover:text-red-900 font-medium"
                                     >
@@ -84,12 +94,22 @@
                                     </button>
                                 </div>
                             </div>
-                        @empty
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                             <p class="text-center text-gray-500">Belum ada FAQ yang tersedia.</p>
-                        @endforelse
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</x-layouts.app>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal5863877a5171c196453bfa0bd807e410)): ?>
+<?php $attributes = $__attributesOriginal5863877a5171c196453bfa0bd807e410; ?>
+<?php unset($__attributesOriginal5863877a5171c196453bfa0bd807e410); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal5863877a5171c196453bfa0bd807e410)): ?>
+<?php $component = $__componentOriginal5863877a5171c196453bfa0bd807e410; ?>
+<?php unset($__componentOriginal5863877a5171c196453bfa0bd807e410); ?>
+<?php endif; ?>
+<?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/admin/faq/index.blade.php ENDPATH**/ ?>

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\PengaduanController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PengaduanController as AdminPengaduanController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -17,10 +18,10 @@ use App\Http\Middleware\CheckRole;
 
 // --- Rute Publik ---
 Route::get('/', function () { return view('welcome'); })->name('home');
-// PERBAIKAN: Menggunakan method 'showPublicPage' yang akan kita pastikan ada di Controller
 Route::get('/faq', [FaqController::class, 'showPublicPage'])->name('faq');
 
-// --- Rute Otentikasi ---
+// --- Rute Otentikasi (Login, Register, Forgot Password, dll.) ---
+// Lokasi ini sudah benar. File auth.php akan menangani semua rute otentikasi.
 require __DIR__.'/auth.php';
 
 // --- Rute yang Membutuhkan Login ---
@@ -42,8 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/pengaduan/{pengaduan}', [AdminPengaduanController::class, 'show'])->name('pengaduan.show');
             Route::patch('/pengaduan/{pengaduan}/tanggapi', [AdminPengaduanController::class, 'tanggapi'])->name('pengaduan.tanggapi');
 
-            // --- Rute Manajemen FAQ untuk Admin ---
-            // PERBAIKAN: Menggunakan Route::resource yang lebih ringkas dan standar
+            // Rute Manajemen FAQ untuk Admin
             Route::resource('faq', FaqController::class);
     });
 
@@ -57,4 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/pengaduan/{pengaduan}', [PengaduanController::class, 'show'])->name('pengaduan.show');
             Route::post('/pengaduan/{pengaduan}/balas', [PengaduanController::class, 'balas'])->name('pengaduan.balas');
     });
+
+    // PERBAIKAN: Baris-baris di bawah ini telah dihapus karena sudah ditangani oleh require __DIR__.'/auth.php';
+    // dan tidak seharusnya berada di dalam middleware 'auth'.
 });
