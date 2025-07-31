@@ -23,6 +23,7 @@ class Pengaduan extends Model
         'status',
         'nama_usaha',
         'nama_pelaku_usaha',
+        'bukti',
         'alamat_usaha',
     ];
 

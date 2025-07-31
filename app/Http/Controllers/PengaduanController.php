@@ -9,6 +9,7 @@ use App\Mail\BalasanUserMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PengaduanController extends Controller
@@ -34,7 +35,15 @@ class PengaduanController extends Controller
             'judul' => 'required|string|max:255',
             'kategori' => 'required|string',
             'deskripsi' => 'required|string|min:3',
+            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048', // Opsional, maks 2MB
         ]);
+
+        $buktiPath = null;
+        if ($request->hasFile('bukti')) {
+            // Simpan file ke storage/app/public/bukti-pengaduan
+            // dan simpan path-nya ke variabel
+            $buktiPath = $request->file('bukti')->store('bukti-pengaduan', 'public');
+        }
 
         $pengaduan = Pengaduan::create([
             'user_id' => Auth::id(),
@@ -46,6 +55,7 @@ class PengaduanController extends Controller
             'kategori' => $request->kategori,
             'deskripsi' => $request->deskripsi,
             'status' => 'Baru',
+            'bukti' => $buktiPath, // Simpan path file bukti ke database
         ]);
 
         try {

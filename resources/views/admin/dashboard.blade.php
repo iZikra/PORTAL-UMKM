@@ -36,17 +36,6 @@
                     <p class="mt-2 text-3xl font-bold text-red-600 dark:text-red-400">{{ $pengaduanDitolak }}</p>
                 </div>
             </div>
-
-            {{-- Tombol Aksi Cepat --}}
-            <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h3 class="text-lg font-medium mb-4">Aksi Cepat</h3>
-                    <a href="{{ route('admin.pengaduan.index') }}" class="inline-block bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-6 rounded-lg text-sm">
-                        Buka Halaman Kelola Pengaduan &rarr;
-                    </a>
-                </div>
-            </div>
-
             {{-- Bagian Grafik --}}
             <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
