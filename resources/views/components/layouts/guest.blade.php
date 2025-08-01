@@ -13,16 +13,17 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex bg-gray-100 dark:bg-gray-900">
-            <div class="hidden lg:block w-1/2 bg-cover bg-center" style="background-image: url('{{ asset('images/login-bg.jpg') }}');">
+        <div class="relative min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+            
+            {{-- PERUBAHAN: Menambahkan opacity pada lapisan background --}}
+            <div 
+                class="absolute inset-0 w-full h-full bg-cover bg-center" 
+                style="background-image: url('{{ asset('images/login-bg.jpg') }}'); filter: blur(2px); opacity: 0.9;">
             </div>
 
-            <div class="w-full lg:w-1/2 flex flex-col items-center justify-center p-6 sm:p-12">
-                {{-- PERUBAHAN: Logo Laravel dihilangkan dari sini --}}
-
-                <div class="w-full sm:max-w-md mt-6 px-6 py-8 bg-white dark:bg-gray-800 shadow-xl rounded-lg overflow-hidden">
-                    {{ $slot }}
-                </div>
+            {{-- Lapisan Form Login --}}
+            <div class="relative w-full sm:max-w-md mt-6 px-6 py-8 bg-white/90 dark:bg-gray-800/90 shadow-2xl rounded-lg overflow-hidden">
+                {{ $slot }}
             </div>
         </div>
     </body>

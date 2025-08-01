@@ -12,7 +12,7 @@
 
                     {{-- Tombol Kembali --}}
                     <div class="mb-6">
-                        <a href="{{ route('admin.pengaduan.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 focus:outline-none focus:border-gray-700 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">
+                        <a href="{{ route('admin.pengaduan.index', request()->query()) }}" class="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 focus:outline-none focus:border-gray-700 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">
                             &larr; Kembali ke Daftar Pengaduan
                         </a>
                     </div>
@@ -109,6 +109,10 @@
                         <form method="POST" action="{{ route('admin.pengaduan.tanggapi', $pengaduan) }}">
                             @csrf
                             @method('PATCH')
+
+                            {{-- Hidden input untuk menyimpan filter lama --}}
+                            <input type="hidden" name="search" value="{{ request('search') }}">
+                            <input type="hidden" name="filter_status" value="{{ request('status') }}">
 
                             <div class="mt-4">
                                 <label for="status_select" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Ubah Status') }}</label>

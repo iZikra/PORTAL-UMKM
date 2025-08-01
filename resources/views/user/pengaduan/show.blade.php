@@ -38,6 +38,8 @@
                                         <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                     @elseif($pengaduan->status == 'Diproses')
                                         <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    @elseif($pengaduan->status == 'Ditolak')
+                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
                                     @else
                                         <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                     @endif
@@ -100,19 +102,25 @@
                         </div>
                     </div>
 
-                    {{-- Form Balasan untuk User --}}
-                    <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
-                        <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 pb-2">Kirim Balasan</h3>
-                        <form method="POST" action="{{ route('user.pengaduan.balas', $pengaduan) }}">
-                            @csrf
-                            <textarea name="tanggapan" rows="5" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm" placeholder="Tulis balasan atau informasi tambahan di sini..." required></textarea>
-                            <div class="flex items-center justify-end mt-4">
-                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500">
-                                    Kirim Balasan
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                    {{-- Form Balasan untuk User (Hanya jika status belum Selesai/Ditolak) --}}
+                    @if(!in_array($pengaduan->status, ['Selesai', 'Ditolak']))
+                        <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 pb-2">Kirim Balasan</h3>
+                            <form method="POST" action="{{ route('user.pengaduan.balas', $pengaduan) }}">
+                                @csrf
+                                <textarea name="tanggapan" rows="5" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm" placeholder="Tulis balasan atau informasi tambahan di sini..." required></textarea>
+                                <div class="flex items-center justify-end mt-4">
+                                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500">
+                                        Kirim Balasan
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    @else
+                         <div class="border-t border-gray-200 dark:border-gray-700 pt-6 text-center">
+                             <p class="text-sm text-gray-500">Diskusi untuk pengaduan ini telah ditutup.</p>
+                         </div>
+                    @endif
 
                 </div>
             </div>

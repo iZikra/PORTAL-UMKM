@@ -76,4 +76,10 @@ class FaqController extends Controller
         $faq->delete();
         return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil dihapus.');
     }
+
+    public function showPublicFaq()
+    {
+        $faqs = Faq::latest()->get(); // Ambil semua data FAQ
+        return view('faq_public', compact('faqs')); // Kirim data ke view baru 'faq_public.blade.php'
+    }
 }

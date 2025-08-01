@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Portal Layanan Pengaduan UMKM</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     </head>
     <body class="antialiased bg-gray-50 text-gray-800">
         <div class="min-h-screen">
@@ -14,27 +14,27 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between items-center py-4">
                         <div class="flex-shrink-0">
-                            <a href="{{ route('home') }}" class="text-xl font-bold text-gray-800">
+                            <a href="<?php echo e(route('home')); ?>" class="text-xl font-bold text-gray-800">
                                 Portal UMKM
                             </a>
                         </div>
 
                         <nav class="hidden md:flex items-center space-x-8">
-                            <a href="{{ route('home') }}" class="font-semibold text-gray-600 hover:text-gray-900">Beranda</a>
+                            <a href="<?php echo e(route('home')); ?>" class="font-semibold text-gray-600 hover:text-gray-900">Beranda</a>
                             <a href="#fitur" class="font-semibold text-gray-600 hover:text-gray-900">Fitur</a>
-                            {{-- PERBAIKAN: Mengarahkan link ke rute FAQ publik yang baru --}}
-                            <a href="{{ route('faq.public') }}" class="font-semibold text-gray-600 hover:text-gray-900">FAQ</a>
+                            
+                            <a href="<?php echo e(route('faq.public')); ?>" class="font-semibold text-gray-600 hover:text-gray-900">FAQ</a>
                         </nav>
 
                         <div class="hidden md:flex items-center space-x-4">
-                            @auth
-                                <a href="{{ url('/dashboard') }}" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700">Dashboard</a>
-                            @else
-                                <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-600 hover:text-gray-900">Log in</a>
-                                @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700">Register</a>
-                                @endif
-                            @endauth
+                            <?php if(auth()->guard()->check()): ?>
+                                <a href="<?php echo e(url('/dashboard')); ?>" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700">Dashboard</a>
+                            <?php else: ?>
+                                <a href="<?php echo e(route('login')); ?>" class="text-sm font-semibold text-gray-600 hover:text-gray-900">Log in</a>
+                                <?php if(Route::has('register')): ?>
+                                    <a href="<?php echo e(route('register')); ?>" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700">Register</a>
+                                <?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -55,8 +55,8 @@
                                     <p class="mt-4 text-lg text-gray-300">
                                         Wadah untuk menyampaikan aspirasi, keluhan, dan mendapatkan solusi untuk kemajuan usaha Anda.
                                     </p>
-                                    {{-- PERBAIKAN: Arahkan ke halaman login --}}
-                                    <a href="{{ route('login') }}" class="inline-block px-8 py-3 text-lg font-semibold text-white bg-indigo-600 rounded-lg shadow-lg hover:bg-indigo-700 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 ease-in-out">
+                                    
+                                    <a href="<?php echo e(route('login')); ?>" class="inline-block px-8 py-3 text-lg font-semibold text-white bg-indigo-600 rounded-lg shadow-lg hover:bg-indigo-700 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 ease-in-out">
                                     Buat Pengaduan Sekarang
                                     </a>
                                 </div>
@@ -69,7 +69,7 @@
                     <div class="container mx-auto px-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-                            {{-- Card 1: Mudah & Cepat --}}
+                            
                             <div class="transform transition-transform duration-300 hover:-translate-y-2">
                                 <div class="relative flex flex-col min-w-0 break-words bg-white w-full h-full shadow-lg rounded-2xl overflow-hidden">
                                     <div class="px-6 py-8 flex-auto">
@@ -84,7 +84,7 @@
                                 </div>
                             </div>
 
-                            {{-- Card 2: Transparan & Terpantau --}}
+                            
                             <div class="transform transition-transform duration-300 hover:-translate-y-2">
                                 <div class="relative flex flex-col min-w-0 break-words bg-white w-full h-full shadow-lg rounded-2xl overflow-hidden">
                                     <div class="px-6 py-8 flex-auto">
@@ -99,7 +99,7 @@
                                 </div>
                             </div>
 
-                            {{-- Card 3: Solusi Tepat Sasaran --}}
+                            
                             <div class="transform transition-transform duration-300 hover:-translate-y-2">
                                 <div class="relative flex flex-col min-w-0 break-words bg-white w-full h-full shadow-lg rounded-2xl overflow-hidden">
                                     <div class="px-6 py-8 flex-auto">
@@ -120,9 +120,9 @@
 
             <footer class="bg-white border-t">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-gray-500">
-                    <p>&copy; {{ date('Y') }} Portal Layanan Pengaduan UMKM. All rights reserved.</p>
+                    <p>&copy; <?php echo e(date('Y')); ?> Portal Layanan Pengaduan UMKM. All rights reserved.</p>
                 </div>
             </footer>
         </div>
     </body>
-</html>
+</html><?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/welcome.blade.php ENDPATH**/ ?>

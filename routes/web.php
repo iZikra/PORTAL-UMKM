@@ -2,9 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\FaqController;
+use App\Http\Controllers\FaqController; // Pastikan ini ada
 use App\Http\Controllers\PengaduanController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PengaduanController as AdminPengaduanController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
@@ -18,10 +17,14 @@ use App\Http\Middleware\CheckRole;
 
 // --- Rute Publik ---
 Route::get('/', function () { return view('welcome'); })->name('home');
-Route::get('/faq', [FaqController::class, 'showPublicPage'])->name('faq');
+Route::get('/faq', [FaqController::class, 'showPublicFaq'])->name('faq.public');
 
-// --- Rute Otentikasi (Login, Register, Forgot Password, dll.) ---
-// Lokasi ini sudah benar. File auth.php akan menangani semua rute otentikasi.
+// PERBAIKAN: Beri komentar atau hapus rute ini karena FAQ sekarang hanya untuk admin.
+// Route::get('/faq', [FaqController::class, 'showPublicPage'])->name('faq');
+// Jika Anda masih ingin ada halaman FAQ untuk publik, biarkan saja,
+// tapi pastikan controllernya tidak memanggil navigation.blade.php yang butuh role.
+
+// --- Rute Otentikasi ---
 require __DIR__.'/auth.php';
 
 // --- Rute yang Membutuhkan Login ---
@@ -43,7 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/pengaduan/{pengaduan}', [AdminPengaduanController::class, 'show'])->name('pengaduan.show');
             Route::patch('/pengaduan/{pengaduan}/tanggapi', [AdminPengaduanController::class, 'tanggapi'])->name('pengaduan.tanggapi');
 
-            // Rute Manajemen FAQ untuk Admin
+            // PERBAIKAN: Pastikan rute Manajemen FAQ ada DI DALAM grup admin ini.
             Route::resource('faq', FaqController::class);
     });
 
@@ -57,7 +60,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/pengaduan/{pengaduan}', [PengaduanController::class, 'show'])->name('pengaduan.show');
             Route::post('/pengaduan/{pengaduan}/balas', [PengaduanController::class, 'balas'])->name('pengaduan.balas');
     });
-
-    // PERBAIKAN: Baris-baris di bawah ini telah dihapus karena sudah ditangani oleh require __DIR__.'/auth.php';
-    // dan tidak seharusnya berada di dalam middleware 'auth'.
 });
