@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Faq;
 // PERBAIKAN: use statement yang benar
 use Illuminate\Http\Request;
+use App\Models\KnowledgeBase;
 
 class FaqController extends Controller
 {
@@ -81,5 +82,10 @@ class FaqController extends Controller
     {
         $faqs = Faq::latest()->get(); // Ambil semua data FAQ
         return view('faq_public', compact('faqs')); // Kirim data ke view baru 'faq_public.blade.php'
+    }
+    public function showKnowledgeBase()
+    {
+    $articles = KnowledgeBase::latest()->get();
+    return view('knowledge_base_public', compact('articles'));
     }
 }

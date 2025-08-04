@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PengaduanController as AdminPengaduanController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Middleware\CheckRole;
+use App\Http\Controllers\Admin\KnowledgeBaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,7 @@ use App\Http\Middleware\CheckRole;
 // --- Rute Publik ---
 Route::get('/', function () { return view('welcome'); })->name('home');
 Route::get('/faq', [FaqController::class, 'showPublicFaq'])->name('faq.public');
+Route::get('/knowledge-base', [FaqController::class, 'showKnowledgeBase'])->name('knowledge-base.public');
 
 // PERBAIKAN: Beri komentar atau hapus rute ini karena FAQ sekarang hanya untuk admin.
 // Route::get('/faq', [FaqController::class, 'showPublicPage'])->name('faq');
@@ -45,6 +47,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/pengaduan', [AdminPengaduanController::class, 'index'])->name('pengaduan.index');
             Route::get('/pengaduan/{pengaduan}', [AdminPengaduanController::class, 'show'])->name('pengaduan.show');
             Route::patch('/pengaduan/{pengaduan}/tanggapi', [AdminPengaduanController::class, 'tanggapi'])->name('pengaduan.tanggapi');
+
+            Route::resource('admin/knowledge-base', KnowledgeBaseController::class);
 
             // PERBAIKAN: Pastikan rute Manajemen FAQ ada DI DALAM grup admin ini.
             Route::resource('faq', FaqController::class);
