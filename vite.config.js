@@ -8,4 +8,13 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        host: '0.0.0.0',
+        port: 5173,
+        // Tambahkan konfigurasi HMR (Hot Module Replacement)
+        // untuk memberitahu Vite alamat IP yang benar saat diakses dari perangkat lain.
+        hmr: {
+            host: '192.168.103.250',
+        },
+    },
 });
