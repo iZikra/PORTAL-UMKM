@@ -7,19 +7,47 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
+            
+            {{-- [FIXED] Menambahkan Navigasi di Layout Tamu --}}
+            <nav class="w-full bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between h-16">
+                        <div class="flex items-center">
+                            <a href="/">
+                                <h1 class="text-xl font-bold text-gray-800 dark:text-gray-200">Portal UMKM</h1>
+                            </a>
+                        </div>
+                        <div class="flex items-center">
+                            @if (Route::has('login'))
+                                <div class="space-x-4">
+                                    @auth
+                                        {{-- Jika sudah login, tampilkan tombol Dashboard --}}
+                                        <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
+                                    @else
+                                        {{-- Jika belum login, tampilkan link Login dan Register --}}
+                                        <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
 
+                                        @if (Route::has('register'))
+                                            <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
+                                        @endif
+                                    @endauth
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            {{-- Konten utama (form login, register, dll) --}}
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
             </div>

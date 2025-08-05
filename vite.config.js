@@ -14,7 +14,7 @@ export default defineConfig({
         // Tambahkan konfigurasi HMR (Hot Module Replacement)
         // untuk memberitahu Vite alamat IP yang benar saat diakses dari perangkat lain.
         hmr: {
-            host: '192.168.18.19',
+            host: '192.168.103.250',
         },
     },
 });

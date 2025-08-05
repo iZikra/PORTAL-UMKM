@@ -6,40 +6,74 @@
         <title>Portal Layanan Pengaduan UMKM</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-        {{-- Menambahkan script Alpine.js untuk interaktivitas menu --}}
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="antialiased bg-gray-50 text-gray-800">
         <div class="min-h-screen">
-            {{-- PERBAIKAN: Menambahkan x-data untuk state menu mobile --}}
             <header x-data="{ open: false }" class="bg-white shadow-sm">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex justify-between items-center py-4">
-                        <div class="flex-shrink-0">
-                            <a href="{{ route('home') }}" class="text-xl font-bold text-gray-800">
-                                Portal UMKM
-                            </a>
+                    <div class="flex justify-between h-16">
+                        <div class="flex">
+                            <div class="shrink-0 flex items-center">
+                                {{-- Tautan Portal UMKM ini sudah benar dan seharusnya bisa diklik --}}
+                                <a href="{{ route('home') }}" class="text-xl font-bold text-gray-800">
+                                    Portal UMKM
+                                </a>
+                            </div>
+
+                            {{-- [FIXED] Navigasi Desktop dengan logika yang lebih rapi --}}
+                            <div class="hidden md:flex items-center space-x-8 ml-10">
+                                @php
+                                    $baseClasses = 'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out';
+                                    $activeClasses = 'border-indigo-400 text-gray-900 focus:outline-none focus:border-indigo-700';
+                                    $inactiveClasses = 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300';
+                                @endphp
+
+                                @auth
+                                    {{-- Navigasi untuk Pengguna yang Sudah Login --}}
+                                    <a href="{{ route('home') }}" class="{{ $baseClasses }} {{ request()->routeIs('home') ? $activeClasses : $inactiveClasses }}">Beranda</a>
+                                    <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" class="{{ $baseClasses }} {{ request()->routeIs('admin.dashboard', 'dashboard') ? $activeClasses : $inactiveClasses }}">Dashboard</a>
+                                    <a href="{{ route('knowledge-base.public') }}" class="{{ $baseClasses }} {{ request()->routeIs('knowledge-base.public') ? $activeClasses : $inactiveClasses }}">Basis Pengetahuan</a>
+                                    <a href="{{ auth()->user()->role === 'admin' ? route('admin.faq.index') : route('faq.public') }}" class="{{ $baseClasses }} {{ request()->routeIs('admin.faq.*', 'faq.public') ? $activeClasses : $inactiveClasses }}">
+                                        {{ auth()->user()->role === 'admin' ? 'Kelola FAQ' : 'FAQ' }}
+                                    </a>
+                                @else
+                                    {{-- Navigasi untuk Tamu (Belum Login) --}}
+                                    <a href="{{ route('home') }}" class="{{ $baseClasses }} {{ request()->routeIs('home') ? $activeClasses : $inactiveClasses }}">Beranda</a>
+                                    <a href="{{ route('knowledge-base.public') }}" class="{{ $baseClasses }} {{ request()->routeIs('knowledge-base.public') ? $activeClasses : $inactiveClasses }}">Basis Pengetahuan</a>
+                                    <a href="{{ route('faq.public') }}" class="{{ $baseClasses }} {{ request()->routeIs('faq.public') ? $activeClasses : $inactiveClasses }}">FAQ</a>
+                                @endauth
+                            </div>
                         </div>
 
-                        {{-- Navigasi untuk Desktop (disembunyikan di mobile) --}}
-                        <div class="hidden md:flex items-center space-x-8">
-                            <a href="{{ route('home') }}" class="font-semibold text-gray-600 hover:text-gray-900">Beranda</a>
-                            <a href="#fitur" class="font-semibold text-gray-600 hover:text-gray-900">Fitur</a>
-                            <a href="{{ route('faq.public') }}" class="font-semibold text-gray-600 hover:text-gray-900">FAQ</a>
-                        </div>
+                        {{-- Tombol Login/Register atau User Dropdown --}}
                         <div class="hidden md:flex items-center space-x-4">
                             @auth
-                                <a href="{{ url('/dashboard') }}" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700">Dashboard</a>
+                                <x-dropdown align="right" width="48">
+                                    <x-slot name="trigger">
+                                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                            <div>{{ Auth::user()->name }}</div>
+                                            <div class="ml-1"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg></div>
+                                        </button>
+                                    </x-slot>
+                                    <x-slot name="content">
+                                        <x-dropdown-link :href="route('profile.edit')">{{ __('Profile') }}</x-dropdown-link>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Log Out') }}</x-dropdown-link>
+                                        </form>
+                                    </x-slot>
+                                </x-dropdown>
                             @else
-                                <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-600 hover:text-gray-900">Log in</a>
+                                <a href="{{ route('login') }}" class="text-sm font-medium text-gray-500 hover:text-gray-700">Log in</a>
                                 @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" class="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700">Register</a>
+                                    <a href="{{ route('register') }}" class="text-sm font-medium text-gray-500 hover:text-gray-700">Register</a>
                                 @endif
                             @endauth
                         </div>
 
-                        {{-- Tombol Hamburger untuk Mobile (muncul di mobile) --}}
+                        {{-- Tombol Hamburger untuk Mobile --}}
                         <div class="md:hidden flex items-center">
                             <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none">
                                 <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -54,13 +88,34 @@
                 {{-- Menu Dropdown Mobile --}}
                 <div :class="{'block': open, 'hidden': ! open}" class="hidden md:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <a href="{{ route('home') }}" class="block pl-3 pr-4 py-2 border-l-4 border-indigo-400 text-base font-medium text-indigo-700 bg-indigo-50">Beranda</a>
-                        
-                        <a href="{{ route('faq.public') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300">FAQ</a>
+                        @auth
+                            <a href="{{ route('home') }}" class="block pl-3 pr-4 py-2 border-l-4 border-indigo-400 text-base font-medium text-indigo-700 bg-indigo-50">Beranda</a>
+                            <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300">Dashboard</a>
+                            <a href="{{ route('knowledge-base.public') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300">Basis Pengetahuan</a>
+                            <a href="{{ auth()->user()->role === 'admin' ? route('admin.faq.index') : route('faq.public') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300">
+                                {{ auth()->user()->role === 'admin' ? 'Kelola FAQ' : 'FAQ' }}
+                            </a>
+                        @else
+                             <a href="{{ route('home') }}" class="block pl-3 pr-4 py-2 border-l-4 border-indigo-400 text-base font-medium text-indigo-700 bg-indigo-50">Beranda</a>
+                             <a href="{{ route('knowledge-base.public') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300">Basis Pengetahuan</a>
+                             <a href="{{ route('faq.public') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300">FAQ</a>
+                        @endauth
                     </div>
                     <div class="pt-4 pb-3 border-t border-gray-200">
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300">Dashboard</a>
+                             <div class="px-4">
+                                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                            </div>
+                            <div class="mt-3 space-y-1">
+                                <a href="{{ route('profile.edit') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300">Profile</a>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300">
+                                        Log Out
+                                    </a>
+                                </form>
+                            </div>
                         @else
                             <a href="{{ route('login') }}" class="block pl-3 pr-4 py-2 text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300">Log in</a>
                             @if (Route::has('register'))
@@ -72,8 +127,8 @@
             </header>
 
             <main>
-                <div class="relative pt-16 pb-32 flex content-center items-center justify-center" style="min-height: 75vh;">
-                    <div class="absolute top-0 w-full h-full bg-center bg-cover" style="background-image: url('https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80');">
+                <div class="relative flex content-center items-center justify-center" style="min-height: 75vh;">
+                    <div class="absolute top-0 w-full h-full bg-center bg-cover" style="background-image: url('{{ asset('images/login-bg.jpg') }}');">
                         <span id="blackOverlay" class="w-full h-full absolute opacity-75 bg-black"></span>
                     </div>
                     <div class="container relative mx-auto">
@@ -86,7 +141,7 @@
                                     <p class="mt-4 text-lg text-gray-300">
                                         Wadah untuk menyampaikan aspirasi, keluhan, dan mendapatkan solusi untuk kemajuan usaha Anda.
                                     </p>
-                                    <a href="{{ route('login') }}" class="inline-block mt-6 px-8 py-3 text-lg font-semibold text-white bg-indigo-600 rounded-lg shadow-lg hover:bg-indigo-700 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 ease-in-out">
+                                    <a href="{{ auth()->check() ? route('user.pengaduan.create') : route('login') }}" class="inline-block mt-6 px-8 py-3 text-lg font-semibold text-white bg-indigo-600 rounded-lg shadow-lg hover:bg-indigo-700 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 ease-in-out">
                                     Buat Pengaduan Sekarang
                                     </a>
                                 </div>
@@ -95,7 +150,7 @@
                     </div>
                 </div>
 
-                <section id="fitur" class="py-20 bg-gray-50 -mt-24">
+                <section id="fitur" class="py-20 bg-gray-50">
                     <div class="container mx-auto px-4">
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {{-- Card 1: Mudah & Cepat --}}
