@@ -21,10 +21,6 @@ Route::get('/', function () { return view('welcome'); })->name('home');
 Route::get('/faq', [FaqController::class, 'showPublicFaq'])->name('faq.public');
 Route::get('/knowledge-base', [FaqController::class, 'showKnowledgeBase'])->name('knowledge-base.public');
 
-// PERBAIKAN: Beri komentar atau hapus rute ini karena FAQ sekarang hanya untuk admin.
-// Route::get('/faq', [FaqController::class, 'showPublicPage'])->name('faq');
-// Jika Anda masih ingin ada halaman FAQ untuk publik, biarkan saja,
-// tapi pastikan controllernya tidak memanggil navigation.blade.php yang butuh role.
 
 // --- Rute Otentikasi ---
 require __DIR__.'/auth.php';
@@ -48,9 +44,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/pengaduan/{pengaduan}', [AdminPengaduanController::class, 'show'])->name('pengaduan.show');
             Route::patch('/pengaduan/{pengaduan}/tanggapi', [AdminPengaduanController::class, 'tanggapi'])->name('pengaduan.tanggapi');
 
-            Route::resource('admin/knowledge-base', KnowledgeBaseController::class);
+            // ================= KODE YANG DIPERBAIKI =================
+            // Hapus prefix 'admin/' dari sini karena sudah ditangani oleh grup.
+            Route::resource('knowledge-base', KnowledgeBaseController::class);
+            // ========================================================
 
-            // PERBAIKAN: Pastikan rute Manajemen FAQ ada DI DALAM grup admin ini.
             Route::resource('faq', FaqController::class);
     });
 

@@ -10,22 +10,6 @@ use App\Models\KnowledgeBase;
 
 class FaqController extends Controller
 {
-    /**
-     * Menampilkan halaman FAQ untuk publik.
-     * Mengarah ke: /faq
-     * Menggunakan file: resources/views/faq.blade.php
-     */
-    public function showPublicPage()
-    {
-        $faqs = Faq::latest()->get();
-        return view('faq', compact('faqs'));
-    }
-
-    /**
-     * Menampilkan halaman MANAJEMEN FAQ untuk admin.
-     * Mengarah ke: /admin/faq
-     * Menggunakan file: resources/views/faq/index.blade.php
-     */
     public function index()
     {
     $faqs = Faq::latest()->get();

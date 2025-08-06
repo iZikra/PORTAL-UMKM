@@ -1,29 +1,28 @@
-<?php if (isset($component)) { $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54 = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54 = $attributes; } ?>
-<?php $component = App\View\Components\AppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('app-layout'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\App\View\Components\AppLayout::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes([]); ?>
-     <?php $__env->slot('header', null, []); ?> 
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            <?php echo e(__('Basis Pengetahuan')); ?>
+<!DOCTYPE html>
+<html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Basis Pengetahuan - Portal Layanan Pengaduan UMKM</title>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
+</head>
+<body class="antialiased bg-gray-50 text-gray-800">
+    <div class="min-h-screen">
+        
+        <?php echo $__env->make('components.layouts.navigation', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
-        </h2>
-     <?php $__env->endSlot(); ?>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                
-                <div class="p-4 sm:p-6 md:p-8 text-gray-900">
-                    <h3 class="text-2xl font-bold mb-2">Pusat Bantuan UMKM</h3>
-                    <p class="mb-8 text-gray-600">Temukan panduan, tips, dan solusi untuk pertanyaan umum seputar UMKM.</p>
-
-                    <div class="space-y-6">
+        <main>
+            <div class="py-12">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-4 sm:p-6 md:p-8 text-gray-900">
+                            <h3 class="text-2xl font-bold mb-2">Pusat Bantuan UMKM</h3>
+                            <p class="mb-8 text-gray-600">Temukan panduan, tips, dan solusi untuk pertanyaan umum seputar UMKM.</p>
+                            <div class="space-y-6">
+                                
+                                <div class="space-y-6">
                         
 
                         <div class="p-4 sm:p-6 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
@@ -97,33 +96,29 @@
                             </div>
                         </div>
 
-                        
-                        <?php $__empty_1 = true; $__currentLoopData = $articles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $article): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                            <div class="p-4 sm:p-6 bg-yellow-50 rounded-lg shadow-sm border border-yellow-300">
-                                <?php if($article->category): ?>
-                                    <p class="text-sm font-semibold text-yellow-800 mb-1"><?php echo e($article->category); ?> (Dari Admin)</p>
-                                <?php endif; ?>
-                                <h4 class="text-xl font-bold text-gray-800"><?php echo e($article->title); ?></h4>
-                                <div class="mt-3 text-gray-700 leading-relaxed">
-                                    <?php echo nl2br(e($article->content)); ?>
+                                
 
-                                </div>
+                                
+                                <?php $__empty_1 = true; $__currentLoopData = $articles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $article): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                    <div class="p-4 sm:p-6 bg-yellow-50 rounded-lg shadow-sm border border-yellow-300">
+                                        <?php if($article->category): ?>
+                                            <p class="text-sm font-semibold text-yellow-800 mb-1"><?php echo e($article->category); ?> (Dari Admin)</p>
+                                        <?php endif; ?>
+                                        <h4 class="text-xl font-bold text-gray-800"><?php echo e($article->title); ?></h4>
+                                        <div class="mt-3 text-gray-700 leading-relaxed">
+                                            <?php echo nl2br(e($article->content)); ?>
+
+                                        </div>
+                                    </div>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                    
+                                <?php endif; ?>
                             </div>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                            
-                        <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
- <?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
-<?php $attributes = $__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
-<?php unset($__attributesOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54)): ?>
-<?php $component = $__componentOriginal9ac128a9029c0e4701924bd2d73d7f54; ?>
-<?php unset($__componentOriginal9ac128a9029c0e4701924bd2d73d7f54); ?>
-<?php endif; ?><?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/knowledge_base_public.blade.php ENDPATH**/ ?>
+</body>
+</html><?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/knowledge_base_public.blade.php ENDPATH**/ ?>

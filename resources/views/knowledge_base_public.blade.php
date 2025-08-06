@@ -1,19 +1,28 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Basis Pengetahuan') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Basis Pengetahuan - Portal Layanan Pengaduan UMKM</title>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="antialiased bg-gray-50 text-gray-800">
+    <div class="min-h-screen">
+        {{-- Menggunakan komponen navigasi yang sama dengan halaman utama --}}
+        @include('components.layouts.navigation')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                {{-- PERBAIKAN: Padding diubah agar lebih pas di mobile --}}
-                <div class="p-4 sm:p-6 md:p-8 text-gray-900">
-                    <h3 class="text-2xl font-bold mb-2">Pusat Bantuan UMKM</h3>
-                    <p class="mb-8 text-gray-600">Temukan panduan, tips, dan solusi untuk pertanyaan umum seputar UMKM.</p>
-
-                    <div class="space-y-6">
+        <main>
+            <div class="py-12">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-4 sm:p-6 md:p-8 text-gray-900">
+                            <h3 class="text-2xl font-bold mb-2">Pusat Bantuan UMKM</h3>
+                            <p class="mb-8 text-gray-600">Temukan panduan, tips, dan solusi untuk pertanyaan umum seputar UMKM.</p>
+                            <div class="space-y-6">
+                                {{-- KONTEN STATIS (Bisa Anda hapus jika semua dari database) --}}
+                                <div class="space-y-6">
                         {{-- ARTIKEL-ARTIKEL YANG SUDAH ADA --}}
 
                         <div class="p-4 sm:p-6 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
@@ -87,23 +96,28 @@
                             </div>
                         </div>
 
-                        {{-- KODE DINAMIS UNTUK MENAMPILKAN ARTIKEL DARI DATABASE --}}
-                        @forelse ($articles as $article)
-                            <div class="p-4 sm:p-6 bg-yellow-50 rounded-lg shadow-sm border border-yellow-300">
-                                @if ($article->category)
-                                    <p class="text-sm font-semibold text-yellow-800 mb-1">{{ $article->category }} (Dari Admin)</p>
-                                @endif
-                                <h4 class="text-xl font-bold text-gray-800">{{ $article->title }}</h4>
-                                <div class="mt-3 text-gray-700 leading-relaxed">
-                                    {!! nl2br(e($article->content)) !!}
-                                </div>
+                                {{-- (Konten statis lainnya...) --}}
+
+                                {{-- KONTEN DINAMIS DARI DATABASE --}}
+                                @forelse ($articles as $article)
+                                    <div class="p-4 sm:p-6 bg-yellow-50 rounded-lg shadow-sm border border-yellow-300">
+                                        @if ($article->category)
+                                            <p class="text-sm font-semibold text-yellow-800 mb-1">{{ $article->category }} (Dari Admin)</p>
+                                        @endif
+                                        <h4 class="text-xl font-bold text-gray-800">{{ $article->title }}</h4>
+                                        <div class="mt-3 text-gray-700 leading-relaxed">
+                                            {!! nl2br(e($article->content)) !!}
+                                        </div>
+                                    </div>
+                                @empty
+                                    {{-- Pesan ini hanya akan muncul jika tidak ada artikel tambahan dari admin --}}
+                                @endforelse
                             </div>
-                        @empty
-                            {{-- Pesan ini hanya akan muncul jika tidak ada artikel tambahan dari admin --}}
-                        @endforelse
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
-</x-app-layout>
+</body>
+</html>

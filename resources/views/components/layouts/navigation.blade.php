@@ -44,9 +44,9 @@
                         <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                             Beranda
                         </x-nav-link>
-                        <a href="/#fitur" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:border-gray-300">
-                            Fitur
-                        </a>
+                        <x-nav-link :href="route('knowledge-base.public')" :active="request()->routeIs('knowledge-base.public')">
+                            Basis Pengetahuan
+                        </x-nav-link>
                         <x-nav-link :href="route('faq.public')" :active="request()->routeIs('faq.public')">
                             FAQ
                         </x-nav-link>
@@ -113,7 +113,7 @@
             @else
                 {{-- MENU TAMU (MOBILE) --}}
                  <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">Beranda</x-responsive-nav-link>
-                 <a href="/#fitur" class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700">Fitur</a>
+                 <x-responsive-nav-link :href="route('knowledge-base.public')" :active="request()->routeIs('knowledge-base.public')"> Basis Pengetahuan </x-responsive-nav-link>
                  <x-responsive-nav-link :href="route('faq.public')" :active="request()->routeIs('faq.public')">FAQ</x-responsive-nav-link>
             @endauth
         </div>

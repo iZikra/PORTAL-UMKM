@@ -33,12 +33,11 @@
                                         {{-- Jika sudah login, tampilkan tombol Dashboard --}}
                                         <a href="{{ Auth::user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
                                     @else
-                                        {{-- Jika belum login, tampilkan link Login dan Register --}}
-                                        <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
-
-                                        @if (Route::has('register'))
-                                            <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
-                                        @endif
+                                        {{-- Tombol Login dan Register untuk Tamu --}}
+                                    <a href="{{ route('login') }}" class="text-sm font-medium text-gray-700 dark:text-gray-400 hover:underline">Log in</a>
+                                    @if (Route::has('register'))
+                                    <a href="{{ route('register') }}" class="ml-4 inline-block px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors">Register</a>
+                                    @endif
                                     @endauth
                                 </div>
                             @endif

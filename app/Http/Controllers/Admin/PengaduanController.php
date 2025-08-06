@@ -53,6 +53,11 @@ class PengaduanController extends Controller
         'status' => 'required|in:Baru,Diproses,Selesai,Ditolak',
         'tanggapan' => 'nullable|string|min:3',
     ]);
+    Tanggapan::create([
+            'pengaduan_id' => $pengaduan->id,
+            'user_id' => Auth::id(), // ID admin yang menanggapi
+            'tanggapan' => $request->tanggapan,
+        ]);
 
     // 1. Update status pengaduan
     $pengaduan->update(['status' => $request->input('status')]);
