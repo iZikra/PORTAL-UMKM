@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Providers\RouteServiceProvider;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Menampilkan halaman login.
      */
     public function create(): View
     {
@@ -21,41 +21,26 @@ class AuthenticatedSessionController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Menangani permintaan login yang masuk.
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        // 1. Lakukan proses otentikasi
         $request->authenticate();
-
-        // 2. Regenerate session untuk keamanan
         $request->session()->regenerate();
 
-        // 3. Dapatkan data lengkap user yang sedang login
-        $user = Auth::user();
-
-        // 4. Periksa peran (role) user
-        //    Pastikan di database, kolomnya bernama 'role' dan nilainya 'admin'
-        if ($user->role === 'admin') {
-            // Jika admin, arahkan ke rute bernama 'admin.dashboard'
-            return redirect()->route('admin.dashboard');
-        }
-
-        // 5. Jika bukan admin (berarti user biasa), arahkan ke rute 'dashboard'
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // Setelah login, selalu arahkan ke rute 'dashboard'
+        // Rute ini nanti akan mengalihkannya lagi sesuai role
+        return redirect()->intended(route('dashboard'));
     }
 
     /**
-     * Destroy an authenticated session.
+     * Menghancurkan sesi otentikasi (logout).
      */
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
-
         return redirect('/');
     }
 }

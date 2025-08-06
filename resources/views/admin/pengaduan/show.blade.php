@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-admin-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Detail Pengaduan: ') . $pengaduan->kode_unik }}
@@ -108,7 +108,7 @@
                         
                         <form method="POST" action="{{ route('admin.pengaduan.tanggapi', $pengaduan) }}">
                             @csrf
-                            @method('PATCH')
+                            {{-- @method('PATCH') DIHAPUS KARENA RUTE MENGGUNAKAN POST --}}
 
                             {{-- Hidden input untuk menyimpan filter lama --}}
                             <input type="hidden" name="search" value="{{ request('search') }}">
@@ -141,4 +141,4 @@
             </div>
         </div>
     </div>
-</x-layouts.app>
+</x-admin-layout>

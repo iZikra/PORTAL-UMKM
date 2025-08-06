@@ -4,83 +4,59 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pengaduan;
-use App\Models\Tanggapan;
+use App\Models\Tanggapan; // Import model Tanggapan
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth; // Import Auth untuk mendapatkan id admin
 
 class PengaduanController extends Controller
 {
     /**
-     * Menampilkan semua pengaduan dengan fitur filter dan pencarian.
+     * Menampilkan daftar semua pengaduan.
      */
-    public function index(Request $request)
-{
-    $query = Pengaduan::query();
-
-    // Terapkan filter pencarian jika ada
-    if ($request->filled('search')) {
-        $search = $request->input('search');
-        $query->where(function ($q) use ($search) {
-            $q->where('nama_usaha', 'like', "%{$search}%")
-              ->orWhere('kategori', 'like', "%{$search}%");
-        });
+    public function index()
+    {
+        $pengaduans = Pengaduan::with('user')->latest()->paginate(10);
+        return view('admin.pengaduan.index', compact('pengaduans'));
     }
 
-    // Terapkan filter status jika ada
-    if ($request->filled('status')) {
-        $query->where('status', $request->input('status'));
-    }
-
-    // Selalu gunakan paginate di akhir dan tambahkan filter ke link pagination
-    $pengaduans = $query->latest()->paginate(10)->withQueryString();
-
-    return view('admin.pengaduan.index', compact('pengaduans'));
-}
     /**
-     * Menampilkan detail satu pengaduan.
+     * Menampilkan detail satu pengaduan beserta tanggapannya.
      */
     public function show(Pengaduan $pengaduan)
     {
+        // Memuat relasi tanggapans dan user yang memberikan tanggapan
+        $pengaduan->load('tanggapans.user');
         return view('admin.pengaduan.show', compact('pengaduan'));
     }
 
     /**
-     * Menyimpan tanggapan dan/atau mengubah status pengaduan.
+     * PERBAIKAN: Menambahkan fungsi storeTanggapan yang hilang.
+     * Fungsi ini untuk menyimpan tanggapan dari admin dan mengubah status.
      */
-    public function tanggapi(Request $request, Pengaduan $pengaduan)
-{
-    $request->validate([
-        'status' => 'required|in:Baru,Diproses,Selesai,Ditolak',
-        'tanggapan' => 'nullable|string|min:3',
-    ]);
-    Tanggapan::create([
-            'pengaduan_id' => $pengaduan->id,
-            'user_id' => Auth::id(), // ID admin yang menanggapi
-            'tanggapan' => $request->tanggapan,
+    public function storeTanggapan(Request $request, Pengaduan $pengaduan)
+    {
+        $request->validate([
+            'status' => 'required|in:Baru,Diproses,Selesai,Ditolak',
+            'tanggapan' => 'nullable|string|max:2000',
         ]);
 
-    // 1. Update status pengaduan
-    $pengaduan->update(['status' => $request->input('status')]);
+        // 1. Update status pengaduan
+        $pengaduan->status = $request->status;
+        $pengaduan->save();
 
-    // 2. Simpan tanggapan jika ada
-    if ($request->filled('tanggapan')) {
-        $pengaduan->tanggapans()->create([
-            'user_id' => auth()->id(),
-            'tanggapan' => $request->input('tanggapan'),
-        ]);
+        // 2. Jika admin menulis tanggapan, simpan tanggapan tersebut
+        if ($request->filled('tanggapan')) {
+            Tanggapan::create([
+                'pengaduan_id' => $pengaduan->id,
+                'user_id' => Auth::id(), // Menyimpan ID admin yang sedang login
+                'tanggapan' => $request->tanggapan,
+            ]);
+
+            // Di sini Anda bisa menambahkan logika untuk mengirim email notifikasi ke pengguna
+        }
+
+        // 3. Kembali ke halaman detail dengan pesan sukses
+        return redirect()->route('admin.pengaduan.show', $pengaduan)
+                         ->with('success', 'Status dan tanggapan berhasil disimpan.');
     }
-
-    // 3. Bangun parameter untuk redirect berdasarkan filter LAMA
-    $filterParams = [
-        'search' => $request->input('search'),
-        'status' => $request->input('filter_status') // Menggunakan 'filter_status' dari hidden input
-    ];
-    
-    // 4. Hapus parameter yang kosong
-    $filterParams = array_filter($filterParams);
-
-    // 5. Redirect ke halaman DAFTAR PENGADUAN dengan filter LAMA
-    return redirect()->route('admin.pengaduan.index', $filterParams)
-                     ->with('success', 'Perubahan pada pengaduan berhasil disimpan!');
-}
 }
