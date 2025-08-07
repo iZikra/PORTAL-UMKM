@@ -1,7 +1,7 @@
-<x-layouts.app>
+<x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Detail Pengaduan: ') . $pengaduan->kode_unik }}
+            {{ __('Detail Pengaduan: ') . $pengaduan->judul }}
         </h2>
     </x-slot>
 
@@ -12,7 +12,7 @@
 
                     {{-- Tombol Kembali --}}
                     <div class="mb-6">
-                        <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 focus:outline-none focus:border-gray-700 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">
+                        <a href="{{ route('user.dashboard') }}" class="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 focus:outline-none focus:border-gray-700 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">
                             &larr; Kembali ke Dashboard
                         </a>
                     </div>
@@ -34,15 +34,24 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <p><strong>Waktu Laporan:</strong><br>{{ $pengaduan->created_at->timezone('Asia/Jakarta')->format('d F Y, H:i') }} WIB</p>
                                 <p><strong>Status Saat Ini:</strong><br>
-                                    @if($pengaduan->status == 'Selesai')
-                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    @elseif($pengaduan->status == 'Diproses')
-                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                    @elseif($pengaduan->status == 'Ditolak')
-                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                    @else
-                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                    @endif
+                                    @php
+                                        $statusClass = '';
+                                        switch ($pengaduan->status) {
+                                            case 'Selesai':
+                                                $statusClass = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+                                                break;
+                                            case 'Diproses':
+                                                $statusClass = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+                                                break;
+                                            case 'Ditolak':
+                                                $statusClass = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+                                                break;
+                                            default:
+                                                $statusClass = 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
+                                                break;
+                                        }
+                                    @endphp
+                                    <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {{ $statusClass }}">
                                         {{ $pengaduan->status }}
                                     </span>
                                 </p>
@@ -53,7 +62,7 @@
                             {{-- Deskripsi --}}
                             <div class="prose dark:prose-invert max-w-none">
                                 <p><strong>Deskripsi:</strong></p>
-                                <blockquote class="border-l-4 border-gray-300 dark:border-gray-600 pl-4">{{ $pengaduan->deskripsi }}</blockquote>
+                                <blockquote class="border-l-4 border-gray-300 dark:border-gray-600 pl-4">{{ $pengaduan->isi }}</blockquote>
                             </div>
                             
                             {{-- Bukti Terlampir --}}
@@ -82,7 +91,7 @@
                     <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
                         <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 pb-2">Riwayat Tanggapan</h3>
                         <div class="space-y-4 mt-4">
-                            @forelse (($pengaduan->tanggapans ?? []) as $tanggapan)
+                            @forelse ($pengaduan->tanggapans as $tanggapan)
                                 <div class="{{ $tanggapan->user->role == 'admin' ? 'bg-gray-50 dark:bg-gray-700/50' : 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800' }} p-4 rounded-lg shadow-sm">
                                     <div class="flex justify-between items-center">
                                         <p class="text-sm font-semibold">
@@ -94,7 +103,7 @@
                                         </p>
                                         <p class="text-xs text-gray-500 dark:text-gray-400">{{ $tanggapan->created_at->timezone('Asia/Jakarta')->format('d M Y, H:i') }} WIB</p>
                                     </div>
-                                    <p class="mt-2 text-gray-700 dark:text-gray-300">{{ $tanggapan->tanggapan }}</p>
+                                    <p class="mt-2 text-gray-700 dark:text-gray-300">{{ $tanggapan->isi }}</p>
                                 </div>
                             @empty
                                 <p class="text-sm text-gray-500">Belum ada tanggapan dari petugas.</p>
@@ -106,9 +115,11 @@
                     @if(!in_array($pengaduan->status, ['Selesai', 'Ditolak']))
                         <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
                             <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 pb-2">Kirim Balasan</h3>
-                            <form method="POST" action="{{ route('user.pengaduan.balas', $pengaduan) }}">
+                            {{-- [FIXED] Mengubah route dari 'user.pengaduan.balas' ke 'pengaduan.balas.store' --}}
+                            <form method="POST" action="{{ route('pengaduan.balas.store', $pengaduan) }}">
                                 @csrf
-                                <textarea name="tanggapan" rows="5" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm" placeholder="Tulis balasan atau informasi tambahan di sini..." required></textarea>
+                                {{-- [FIXED] Mengubah nama textarea dari 'tanggapan' menjadi 'isi' --}}
+                                <textarea name="isi" rows="5" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm" placeholder="Tulis balasan atau informasi tambahan di sini..." required></textarea>
                                 <div class="flex items-center justify-end mt-4">
                                     <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500">
                                         Kirim Balasan
@@ -117,13 +128,13 @@
                             </form>
                         </div>
                     @else
-                         <div class="border-t border-gray-200 dark:border-gray-700 pt-6 text-center">
-                             <p class="text-sm text-gray-500">Diskusi untuk pengaduan ini telah ditutup.</p>
-                         </div>
+                       <div class="border-t border-gray-200 dark:border-gray-700 pt-6 text-center">
+                           <p class="text-sm text-gray-500">Diskusi untuk pengaduan ini telah ditutup.</p>
+                       </div>
                     @endif
 
                 </div>
             </div>
         </div>
     </div>
-</x-layouts.app>
+</x-app-layout>
