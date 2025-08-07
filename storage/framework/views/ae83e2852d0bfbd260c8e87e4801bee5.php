@@ -5,10 +5,9 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    
-                    <div class="text-lg font-bold text-gray-800 dark:text-gray-200">
-                        Portal UMKM
-                    </div>
+                    <a href="<?php echo e(route('home')); ?>">
+                        <h1 class="text-lg font-bold text-gray-800 dark:text-gray-200">Portal UMKM</h1>
+                    </a>
                 </div>
 
                 <!-- Navigation Links -->
@@ -283,6 +282,8 @@
 <?php $component = $__componentOriginal68cb1971a2b92c9735f83359058f7108; ?>
 <?php unset($__componentOriginal68cb1971a2b92c9735f83359058f7108); ?>
 <?php endif; ?>
+                            
+                            
                             <form method="POST" action="<?php echo e(route('logout')); ?>">
                                 <?php echo csrf_field(); ?>
                                 <?php if (isset($component)) { $__componentOriginal68cb1971a2b92c9735f83359058f7108 = $component; } ?>
@@ -489,6 +490,8 @@
 <?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
 <?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
 <?php endif; ?>
+                    
+                    
                     <form method="POST" action="<?php echo e(route('logout')); ?>">
                         <?php echo csrf_field(); ?>
                         <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>

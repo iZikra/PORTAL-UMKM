@@ -5,10 +5,9 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    {{-- [FIXED] Menghapus tautan dari logo --}}
-                    <div class="text-lg font-bold text-gray-800 dark:text-gray-200">
-                        Portal UMKM
-                    </div>
+                    <a href="{{ route('home') }}">
+                        <h1 class="text-lg font-bold text-gray-800 dark:text-gray-200">Portal UMKM</h1>
+                    </a>
                 </div>
 
                 <!-- Navigation Links -->
@@ -69,6 +68,8 @@
                         </x-slot>
                         <x-slot name="content">
                             <x-dropdown-link :href="route('profile.edit')">{{ __('Profile') }}</x-dropdown-link>
+                            
+                            {{-- [FIXED] Mengubah tautan logout menjadi formulir POST --}}
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
@@ -121,6 +122,8 @@
                 </div>
                 <div class="mt-3 space-y-1">
                     <x-responsive-nav-link :href="route('profile.edit')">{{ __('Profile') }}</x-responsive-nav-link>
+                    
+                    {{-- [FIXED] Mengubah tautan logout menjadi formulir POST --}}
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">

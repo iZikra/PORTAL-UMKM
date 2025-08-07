@@ -1,44 +1,48 @@
-<x-app-layout>
+<x-admin-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Artikel') }}
+            {{ __('Edit Artikel Basis Pengetahuan') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <form action="{{ route('knowledge-base.update', $article->id) }}" method="POST">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    {{-- [FIXED] Mengubah nama route dari 'knowledge-base.update' menjadi 'admin.knowledge-base.update' --}}
+                    <form method="POST" action="{{ route('admin.knowledge-base.update', $knowledgeBase) }}">
                         @csrf
                         @method('PUT')
-                        
-                        <div class="mb-4">
-                            <label for="title" class="block text-sm font-medium text-gray-700">Judul</label>
-                            <input type="text" name="title" id="title" value="{{ $article->title }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>
+
+                        <!-- Title -->
+                        <div>
+                            <x-input-label for="title" :value="__('Judul')" />
+                            <x-text-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title', $knowledgeBase->title)" required autofocus />
+                            <x-input-error :messages="$errors->get('title')" class="mt-2" />
                         </div>
 
-                        <div class="mb-4">
-                            <label for="category" class="block text-sm font-medium text-gray-700">Kategori</label>
-                            <input type="text" name="category" id="category" value="{{ $article->category }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" placeholder="Contoh: Perizinan">
+                        <!-- Category -->
+                        <div class="mt-4">
+                            <x-input-label for="category" :value="__('Kategori')" />
+                            <x-text-input id="category" class="block mt-1 w-full" type="text" name="category" :value="old('category', $knowledgeBase->category)" />
+                            <x-input-error :messages="$errors->get('category')" class="mt-2" />
                         </div>
 
-                        <div class="mb-6">
-                            <label for="content" class="block text-sm font-medium text-gray-700">Konten</label>
-                            <textarea name="content" id="content" rows="10" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" required>{{ $article->content }}</textarea>
+                        <!-- Content -->
+                        <div class="mt-4">
+                            <x-input-label for="content" :value="__('Konten')" />
+                            <textarea id="content" name="content" rows="10" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">{{ old('content', $knowledgeBase->content) }}</textarea>
+                            <x-input-error :messages="$errors->get('content')" class="mt-2" />
                         </div>
 
-                        <div class="flex items-center space-x-4">
-                            <button type="submit" class="px-6 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700">
-                                Perbarui Artikel
-                            </button>
-                            <a href="{{ route('knowledge-base.index') }}" class="text-sm text-gray-600 hover:underline">
-                                Batal
-                            </a>
+                        <div class="flex items-center justify-end mt-4">
+                            <x-primary-button>
+                                {{ __('Simpan Perubahan') }}
+                            </x-primary-button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-admin-layout>

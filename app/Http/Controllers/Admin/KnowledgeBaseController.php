@@ -8,35 +8,23 @@ use Illuminate\Http\Request;
 
 class KnowledgeBaseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        // Mengambil semua artikel dan mengelompokkannya berdasarkan kolom 'category'
-    $articles = \App\Models\KnowledgeBase::latest()->get();
-        
-        // Mengirim data yang sudah dikelompokkan ke view
-    return view('admin.knowledge-base.index', compact('articles'));
+        $articles = KnowledgeBase::latest()->paginate(10);
+        return view('admin.knowledge-base.index', compact('articles'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('admin.knowledge-base.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
             'content' => 'required|string',
+            'category' => 'nullable|string|max:255',
         ]);
 
         KnowledgeBase::create($request->all());
@@ -46,45 +34,32 @@ class KnowledgeBaseController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * [FIXED] Mengubah metode untuk mencari data secara manual.
+     * Ini akan mengatasi error 'Undefined variable $knowledgeBase'.
      */
-    public function show(KnowledgeBase $knowledgeBase)
+    public function edit($id)
     {
-        // Biasanya tidak digunakan untuk admin, redirect ke edit
-        return redirect()->route('admin.knowledge-base.edit', $knowledgeBase);
+        $knowledgeBase = KnowledgeBase::findOrFail($id);
+        return view('admin.knowledge-base.edit', compact('knowledgeBase'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(KnowledgeBase $knowledge_base)
-    {
-        return view('admin.knowledge-base.edit', ['article' => $knowledge_base]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, KnowledgeBase $knowledge_base)
+    public function update(Request $request, KnowledgeBase $knowledgeBase)
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
             'content' => 'required|string',
+            'category' => 'nullable|string|max:255',
         ]);
 
-        $knowledge_base->update($request->all());
+        $knowledgeBase->update($request->all());
 
         return redirect()->route('admin.knowledge-base.index')
                          ->with('success', 'Artikel berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(KnowledgeBase $knowledge_base)
+    public function destroy(KnowledgeBase $knowledgeBase)
     {
-        $knowledge_base->delete();
+        $knowledgeBase->delete();
 
         return redirect()->route('admin.knowledge-base.index')
                          ->with('success', 'Artikel berhasil dihapus.');

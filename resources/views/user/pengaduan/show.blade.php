@@ -62,6 +62,7 @@
                             {{-- Deskripsi --}}
                             <div class="prose dark:prose-invert max-w-none">
                                 <p><strong>Deskripsi:</strong></p>
+                                {{-- [FIXED] Menggunakan kolom 'isi' yang benar --}}
                                 <blockquote class="border-l-4 border-gray-300 dark:border-gray-600 pl-4">{{ $pengaduan->isi }}</blockquote>
                             </div>
                             
@@ -96,13 +97,14 @@
                                     <div class="flex justify-between items-center">
                                         <p class="text-sm font-semibold">
                                             @if($tanggapan->user->role == 'admin')
-                                                {{ $tanggapan->user->name }} (Petugas)
+                                                {{ $tanggapan->user->name }} (Admin)
                                             @else
                                                 Anda (Pelapor)
                                             @endif
                                         </p>
                                         <p class="text-xs text-gray-500 dark:text-gray-400">{{ $tanggapan->created_at->timezone('Asia/Jakarta')->format('d M Y, H:i') }} WIB</p>
                                     </div>
+                                    {{-- [FIXED] Menggunakan kolom 'isi' yang benar --}}
                                     <p class="mt-2 text-gray-700 dark:text-gray-300">{{ $tanggapan->isi }}</p>
                                 </div>
                             @empty
@@ -115,8 +117,8 @@
                     @if(!in_array($pengaduan->status, ['Selesai', 'Ditolak']))
                         <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
                             <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 pb-2">Kirim Balasan</h3>
-                            {{-- [FIXED] Mengubah route dari 'user.pengaduan.balas' ke 'pengaduan.balas.store' --}}
-                            <form method="POST" action="{{ route('pengaduan.balas.store', $pengaduan) }}">
+                            {{-- [FIXED] Mengubah route dari 'user.pengaduan.balas' ke 'balasan.store' --}}
+                            <form method="POST" action="{{ route('balasan.store', $pengaduan) }}">
                                 @csrf
                                 {{-- [FIXED] Mengubah nama textarea dari 'tanggapan' menjadi 'isi' --}}
                                 <textarea name="isi" rows="5" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm" placeholder="Tulis balasan atau informasi tambahan di sini..." required></textarea>
