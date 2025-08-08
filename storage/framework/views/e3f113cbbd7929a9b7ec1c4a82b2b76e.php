@@ -79,5 +79,4 @@
         </footer>
     </div>
 </body>
-</html>
-<?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/faq_public.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/faq_public.blade.php ENDPATH**/ ?>

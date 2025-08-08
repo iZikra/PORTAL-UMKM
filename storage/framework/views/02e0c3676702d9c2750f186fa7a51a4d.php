@@ -77,5 +77,4 @@
 <?php if (isset($__componentOriginal91fdd17964e43374ae18c674f95cdaa3)): ?>
 <?php $component = $__componentOriginal91fdd17964e43374ae18c674f95cdaa3; ?>
 <?php unset($__componentOriginal91fdd17964e43374ae18c674f95cdaa3); ?>
-<?php endif; ?>
-<?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/admin/knowledge-base/index.blade.php ENDPATH**/ ?>
+<?php endif; ?><?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/admin/knowledge-base/index.blade.php ENDPATH**/ ?>

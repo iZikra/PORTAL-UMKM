@@ -117,5 +117,4 @@
 <?php if (isset($__componentOriginal5863877a5171c196453bfa0bd807e410)): ?>
 <?php $component = $__componentOriginal5863877a5171c196453bfa0bd807e410; ?>
 <?php unset($__componentOriginal5863877a5171c196453bfa0bd807e410); ?>
-<?php endif; ?>
-<?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>
+<?php endif; ?><?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>

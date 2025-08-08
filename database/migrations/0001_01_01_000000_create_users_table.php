@@ -13,11 +13,23 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            // PERBAIKAN DEFINITIF: Menggunakan 'nama_pemilik' dari awal
+            $table->string('nama_pemilik'); 
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['admin', 'user'])->default('user'); // Tambahkan ini
+            $table->string('role', 20)->default('user');
+            
+            // Kolom detail UMKM, boleh kosong (nullable)
+            $table->string('nama_usaha')->nullable();
+            $table->string('nib', 20)->nullable();
+            $table->string('sektor_usaha')->nullable();
+            $table->string('no_telp', 20)->nullable();
+            $table->string('alamat_jalan')->nullable();
+            $table->string('alamat_kelurahan')->nullable();
+            $table->string('alamat_kecamatan')->nullable();
+            $table->string('kabupaten_kota')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });

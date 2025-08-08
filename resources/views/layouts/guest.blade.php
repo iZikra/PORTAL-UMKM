@@ -21,9 +21,12 @@
             <nav class="w-full bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
-                        <div class="flex items-center">
-                            <a href="/">
-                                <h1 class="text-xl font-bold text-gray-800 dark:text-gray-200">Portal UMKM</h1>
+                        <div>
+                            <a href="/" class="flex items-center">
+                                <x-application-logo class="w-12 h-12 fill-current text-gray-500" />
+                                <span class="ml-4 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+                                    Portal UMKM
+                                </span>
                             </a>
                         </div>
                         <div class="flex items-center">

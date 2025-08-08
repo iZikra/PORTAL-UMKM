@@ -19,4 +19,4 @@ class UserController extends Controller
         // Kirim data ke view
         return view('admin.users.index', compact('users'));
     }
-}
+}   

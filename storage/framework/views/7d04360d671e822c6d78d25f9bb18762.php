@@ -618,5 +618,4 @@
             </main>
         </div>
     </body>
-</html>
-<?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/components/layouts/app.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/components/layouts/app.blade.php ENDPATH**/ ?>

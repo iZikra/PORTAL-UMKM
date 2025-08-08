@@ -5,8 +5,10 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('home') }}">
-                        <h1 class="text-lg font-bold text-gray-800 dark:text-gray-200">Portal UMKM</h1>
+                    {{-- [FIXED] Menyamakan ukuran font logo dengan menu navigasi --}}
+                    <a href="{{ Auth::check() && Auth::user()->role === 'admin' ? route('admin.dashboard') : route('home') }}">
+                        {{-- Mengubah h1 dan menyesuaikan kelas font agar konsisten --}}
+                        <div class="text-sm font-medium text-gray-900 dark:text-gray-100">Portal UMKM</div>
                     </a>
                 </div>
 
@@ -15,7 +17,7 @@
                     @auth
                         @if (Auth::user()->role === 'admin')
                             {{-- ================= MENU KHUSUS ADMIN ================= --}}
-                            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard*')">
+                            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                                 {{ __('Dashboard') }}
                             </x-nav-link>
                             <x-nav-link :href="route('admin.pengaduan.index')" :active="request()->routeIs('admin.pengaduan.*')">
@@ -29,7 +31,7 @@
                             </x-nav-link>
                         @else
                             {{-- ================= MENU USER BIASA ================= --}}
-                            <x-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard*')">
+                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                                 {{ __('Dashboard Saya') }}
                             </x-nav-link>
                             <x-nav-link :href="route('knowledge-base.public')" :active="request()->routeIs('knowledge-base.public')">
@@ -69,7 +71,6 @@
                         <x-slot name="content">
                             <x-dropdown-link :href="route('profile.edit')">{{ __('Profile') }}</x-dropdown-link>
                             
-                            {{-- [FIXED] Mengubah tautan logout menjadi formulir POST --}}
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
@@ -101,10 +102,13 @@
         <div class="pt-2 pb-3 space-y-1">
              @auth
                 @if (Auth::user()->role === 'admin')
-                    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard*')">{{ __('Dashboard') }}</x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">{{ __('Dashboard') }}</x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('admin.pengaduan.index')" :active="request()->routeIs('admin.pengaduan.*')">{{ __('Kelola Pengaduan') }}</x-responsive-nav-link>
+                    {{-- [FIXED] Menambahkan link Basis Pengetahuan dan FAQ untuk admin di menu mobile --}}
+                    <x-responsive-nav-link :href="route('admin.knowledge-base.index')" :active="request()->routeIs('admin.knowledge-base.*')">{{ __('Basis Pengetahuan') }}</x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.faq.index')" :active="request()->routeIs('admin.faq.*')">{{ __('FAQ') }}</x-responsive-nav-link>
                 @else
-                    <x-responsive-nav-link :href="route('user.dashboard')" :active="request()->routeIs('user.dashboard*')">{{ __('Dashboard Saya') }}</x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">{{ __('Dashboard Saya') }}</x-responsive-nav-link>
                 @endif
             @else
                  <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">Beranda</x-responsive-nav-link>
@@ -123,7 +127,6 @@
                 <div class="mt-3 space-y-1">
                     <x-responsive-nav-link :href="route('profile.edit')">{{ __('Profile') }}</x-responsive-nav-link>
                     
-                    {{-- [FIXED] Mengubah tautan logout menjadi formulir POST --}}
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">

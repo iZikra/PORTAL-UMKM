@@ -13,11 +13,34 @@ class PengaduanController extends Controller
     /**
      * Menampilkan daftar semua pengaduan.
      */
-    public function index()
-    {
-        $pengaduans = Pengaduan::with('user')->latest()->paginate(10);
-        return view('admin.pengaduan.index', compact('pengaduans'));
+    // app/Http/Controllers/Admin/PengaduanController.php
+
+public function index(Request $request) // Tambahkan Request $request
+{
+    // Mulai query builder
+    $query = Pengaduan::with('user');
+
+    // Terapkan filter berdasarkan status jika ada
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
     }
+
+    // Terapkan filter berdasarkan kata kunci pencarian jika ada
+    if ($request->filled('search')) {
+        $searchTerm = $request->search;
+        $query->where(function ($q) use ($searchTerm) {
+            $q->where('nama_usaha', 'like', "%{$searchTerm}%")
+              ->orWhere('kategori', 'like', "%{$searchTerm}%")
+              ->orWhere('judul', 'like', "%{$searchTerm}%");
+        });
+    }
+
+    // Ambil data yang sudah difilter, urutkan, dan paginasi
+    // Gunakan appends() agar parameter filter tetap ada saat pindah halaman
+    $pengaduans = $query->latest()->paginate(10)->withQueryString();
+
+    return view('admin.pengaduan.index', compact('pengaduans'));
+}
 
     /**
      * Menampilkan detail satu pengaduan beserta tanggapannya.
