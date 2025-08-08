@@ -26,9 +26,13 @@ class DashboardController extends Controller
             ->select('kategori', DB::raw('count(*) as total'))
             ->groupBy('kategori')
             ->get();
-
         $chartLabels = $kategoriData->pluck('kategori');
         $chartData = $kategoriData->pluck('total');
+
+                $kategoriCounts = Pengaduan::query()
+            ->select('kategori', DB::raw('count(*) as total'))
+            ->groupBy('kategori')
+            ->pluck('total', 'kategori');
 
         // Mengirim semua data ke view
         return view('admin.dashboard', compact(
@@ -39,7 +43,8 @@ class DashboardController extends Controller
             'pengaduanSelesai',
             'pengaduanDitolak',
             'chartLabels',
-            'chartData'
+            'chartData',
+            'kategoriCounts'
         ));
     }
 }

@@ -17,6 +17,23 @@ class PengaduanController extends Controller
 
 public function index(Request $request) // Tambahkan Request $request
 {
+    $query = Pengaduan::query()->latest();
+
+        // Menerapkan filter berdasarkan status jika ada
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+    if ($request->filled('search')) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('nama_usaha', 'like', "%{$searchTerm}%")
+                  ->orWhere('kategori', 'like', "%{$searchTerm}%");
+            });
+        }
+        $pengaduans = $query->paginate(10)->withQueryString();
+
+
     // Mulai query builder
     $query = Pengaduan::with('user');
 
