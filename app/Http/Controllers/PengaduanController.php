@@ -53,7 +53,7 @@ class PengaduanController extends Controller
             'kode_unik' => 'PDU-' . strtoupper(Str::random(8)),
             'judul' => $request->judul,
             'kategori' => $request->kategori,
-            'deskripsi' => $request->deskripsi,
+            'isi' => $request->isi,
             'status' => 'Baru',
             'bukti' => $buktiPath, // Simpan path file bukti ke database
         ]);

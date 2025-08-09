@@ -22,7 +22,7 @@
 
                     
                     <div class="mb-6">
-                        <a href="<?php echo e(route('user.dashboard')); ?>" class="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 focus:outline-none focus:border-gray-700 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">
+                        <a href="<?php echo e(route('user.dashboard')); ?>" class="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600">
                             &larr; Kembali ke Dashboard
                         </a>
                     </div>
@@ -45,21 +45,13 @@
                                 <p><strong>Waktu Laporan:</strong><br><?php echo e($pengaduan->created_at->timezone('Asia/Jakarta')->format('d F Y, H:i')); ?> WIB</p>
                                 <p><strong>Status Saat Ini:</strong><br>
                                     <?php
-                                        $statusClass = '';
-                                        switch ($pengaduan->status) {
-                                            case 'Selesai':
-                                                $statusClass = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-                                                break;
-                                            case 'Diproses':
-                                                $statusClass = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-                                                break;
-                                            case 'Ditolak':
-                                                $statusClass = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-                                                break;
-                                            default:
-                                                $statusClass = 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
-                                                break;
-                                        }
+                                        // [PERBAIKAN] Menggunakan 'match' untuk kode yang lebih bersih
+                                        $statusClass = match ($pengaduan->status) {
+                                            'Selesai' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+                                            'Diproses' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
+                                            'Ditolak' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
+                                            default => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+                                        };
                                     ?>
                                     <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full <?php echo e($statusClass); ?>">
                                         <?php echo e($pengaduan->status); ?>
@@ -70,28 +62,21 @@
                                 <p><strong>Kategori:</strong><br><?php echo e($pengaduan->kategori); ?></p>
                             </div>
 
-                            
                             <div class="prose dark:prose-invert max-w-none">
-                                <p><strong>Deskripsi:</strong></p>
-                                
+                                <p><strong>Deskripsi Laporan:</strong></p>
                                 <blockquote class="border-l-4 border-gray-300 dark:border-gray-600 pl-4"><?php echo e($pengaduan->isi); ?></blockquote>
                             </div>
-                            
                             
                             <?php if($pengaduan->bukti): ?>
                             <div class="mt-4">
                                 <p><strong>Bukti Terlampir:</strong></p>
-                                <?php
-                                    $fileExtension = pathinfo($pengaduan->bukti, PATHINFO_EXTENSION);
-                                ?>
-
-                                <?php if(in_array(strtolower($fileExtension), ['jpg', 'jpeg', 'png', 'gif', 'webp'])): ?>
+                                <?php if(in_array(strtolower(pathinfo($pengaduan->bukti, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif', 'webp'])): ?>
                                     <a href="<?php echo e(asset('storage/' . $pengaduan->bukti)); ?>" target="_blank" class="mt-2 inline-block">
-                                        <img src="<?php echo e(asset('storage/' . $pengaduan->bukti)); ?>" alt="Bukti Pengaduan" class="rounded-lg border dark:border-gray-700 max-w-sm hover:opacity-90 transition-opacity">
+                                        <img src="<?php echo e(asset('storage/' . $pengaduan->bukti)); ?>" alt="Bukti Pengaduan" class="rounded-lg border dark:border-gray-700 max-w-sm hover:opacity-90">
                                     </a>
                                 <?php else: ?>
-                                    <a href="<?php echo e(asset('storage/' . $pengaduan->bukti)); ?>" target="_blank" class="mt-2 inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 border border-transparent rounded-md font-semibold text-xs text-gray-800 dark:text-gray-200 uppercase tracking-widest hover:bg-gray-300 dark:hover:bg-gray-600">
-                                        Lihat Dokumen (<?php echo e(strtoupper($fileExtension)); ?>)
+                                    <a href="<?php echo e(asset('storage/' . $pengaduan->bukti)); ?>" target="_blank" class="mt-2 inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 border rounded-md font-semibold text-xs text-gray-800 dark:text-gray-200 uppercase">
+                                        Lihat Dokumen
                                     </a>
                                 <?php endif; ?>
                             </div>
@@ -104,22 +89,19 @@
                         <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 pb-2">Riwayat Tanggapan</h3>
                         <div class="space-y-4 mt-4">
                             <?php $__empty_1 = true; $__currentLoopData = $pengaduan->tanggapans; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tanggapan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                <div class="<?php echo e($tanggapan->user->role == 'admin' ? 'bg-gray-50 dark:bg-gray-700/50' : 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800'); ?> p-4 rounded-lg shadow-sm">
+                                <div class="<?php echo e($tanggapan->user->role == 'admin' ? 'bg-gray-50 dark:bg-gray-700/50' : 'bg-blue-50 dark:bg-blue-900/20'); ?> p-4 rounded-lg">
                                     <div class="flex justify-between items-center">
                                         <p class="text-sm font-semibold">
-                                            <?php if($tanggapan->user->role == 'admin'): ?>
-                                                <?php echo e($tanggapan->user->name); ?> (Admin)
-                                            <?php else: ?>
-                                                Anda (Pelapor)
-                                            <?php endif; ?>
+                                            <?php echo e($tanggapan->user->role == 'admin' ? $tanggapan->user->name . ' (Admin)' : 'Anda (Pelapor)'); ?>
+
                                         </p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400"><?php echo e($tanggapan->created_at->timezone('Asia/Jakarta')->format('d M Y, H:i')); ?> WIB</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400"><?php echo e($tanggapan->created_at->diffForHumans()); ?></p>
                                     </div>
                                     
-                                    <p class="mt-2 text-gray-700 dark:text-gray-300"><?php echo e($tanggapan->isi); ?></p>
+                                    <p class="mt-2 text-gray-700 dark:text-gray-300 whitespace-pre-wrap"><?php echo e($tanggapan->tanggapan); ?></p>
                                 </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                                <p class="text-sm text-gray-500">Belum ada tanggapan dari petugas.</p>
+                                <p class="text-sm text-gray-500">Belum ada tanggapan untuk laporan ini.</p>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -128,21 +110,30 @@
                     <?php if(!in_array($pengaduan->status, ['Selesai', 'Ditolak'])): ?>
                         <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
                             <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 pb-2">Kirim Balasan</h3>
-                            
                             <form method="POST" action="<?php echo e(route('balasan.store', $pengaduan)); ?>">
                                 <?php echo csrf_field(); ?>
                                 
-                                <textarea name="isi" rows="5" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm" placeholder="Tulis balasan atau informasi tambahan di sini..." required></textarea>
+                                <textarea name="tanggapan" rows="5" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm" placeholder="Tulis balasan atau informasi tambahan di sini..." required></textarea>
+                                <?php $__errorArgs = ['tanggapan'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <p class="mt-2 text-sm text-red-600"><?php echo e($message); ?></p>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                 <div class="flex items-center justify-end mt-4">
                                     <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500">
-                                        Kirim Balasan
+                                        Kirim
                                     </button>
                                 </div>
                             </form>
                         </div>
                     <?php else: ?>
                        <div class="border-t border-gray-200 dark:border-gray-700 pt-6 text-center">
-                           <p class="text-sm text-gray-500">Diskusi untuk pengaduan ini telah ditutup.</p>
+                           <p class="text-sm text-gray-500 italic">Diskusi telah ditutup karena pengaduan berstatus '<?php echo e($pengaduan->status); ?>'.</p>
                        </div>
                     <?php endif; ?>
 

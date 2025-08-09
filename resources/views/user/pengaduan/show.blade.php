@@ -12,7 +12,7 @@
 
                     {{-- Tombol Kembali --}}
                     <div class="mb-6">
-                        <a href="{{ route('user.dashboard') }}" class="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600 focus:outline-none focus:border-gray-700 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">
+                        <a href="{{ route('user.dashboard') }}" class="inline-flex items-center px-4 py-2 bg-gray-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-600">
                             &larr; Kembali ke Dashboard
                         </a>
                     </div>
@@ -35,21 +35,13 @@
                                 <p><strong>Waktu Laporan:</strong><br>{{ $pengaduan->created_at->timezone('Asia/Jakarta')->format('d F Y, H:i') }} WIB</p>
                                 <p><strong>Status Saat Ini:</strong><br>
                                     @php
-                                        $statusClass = '';
-                                        switch ($pengaduan->status) {
-                                            case 'Selesai':
-                                                $statusClass = 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-                                                break;
-                                            case 'Diproses':
-                                                $statusClass = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
-                                                break;
-                                            case 'Ditolak':
-                                                $statusClass = 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
-                                                break;
-                                            default:
-                                                $statusClass = 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
-                                                break;
-                                        }
+                                        // [PERBAIKAN] Menggunakan 'match' untuk kode yang lebih bersih
+                                        $statusClass = match ($pengaduan->status) {
+                                            'Selesai' => 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
+                                            'Diproses' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
+                                            'Ditolak' => 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
+                                            default => 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
+                                        };
                                     @endphp
                                     <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {{ $statusClass }}">
                                         {{ $pengaduan->status }}
@@ -59,28 +51,21 @@
                                 <p><strong>Kategori:</strong><br>{{ $pengaduan->kategori }}</p>
                             </div>
 
-                            {{-- Deskripsi --}}
                             <div class="prose dark:prose-invert max-w-none">
-                                <p><strong>Deskripsi:</strong></p>
-                                {{-- [FIXED] Menggunakan kolom 'isi' yang benar --}}
+                                <p><strong>Deskripsi Laporan:</strong></p>
                                 <blockquote class="border-l-4 border-gray-300 dark:border-gray-600 pl-4">{{ $pengaduan->isi }}</blockquote>
                             </div>
                             
-                            {{-- Bukti Terlampir --}}
                             @if ($pengaduan->bukti)
                             <div class="mt-4">
                                 <p><strong>Bukti Terlampir:</strong></p>
-                                @php
-                                    $fileExtension = pathinfo($pengaduan->bukti, PATHINFO_EXTENSION);
-                                @endphp
-
-                                @if (in_array(strtolower($fileExtension), ['jpg', 'jpeg', 'png', 'gif', 'webp']))
+                                @if (in_array(strtolower(pathinfo($pengaduan->bukti, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif', 'webp']))
                                     <a href="{{ asset('storage/' . $pengaduan->bukti) }}" target="_blank" class="mt-2 inline-block">
-                                        <img src="{{ asset('storage/' . $pengaduan->bukti) }}" alt="Bukti Pengaduan" class="rounded-lg border dark:border-gray-700 max-w-sm hover:opacity-90 transition-opacity">
+                                        <img src="{{ asset('storage/' . $pengaduan->bukti) }}" alt="Bukti Pengaduan" class="rounded-lg border dark:border-gray-700 max-w-sm hover:opacity-90">
                                     </a>
                                 @else
-                                    <a href="{{ asset('storage/' . $pengaduan->bukti) }}" target="_blank" class="mt-2 inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 border border-transparent rounded-md font-semibold text-xs text-gray-800 dark:text-gray-200 uppercase tracking-widest hover:bg-gray-300 dark:hover:bg-gray-600">
-                                        Lihat Dokumen ({{ strtoupper($fileExtension) }})
+                                    <a href="{{ asset('storage/' . $pengaduan->bukti) }}" target="_blank" class="mt-2 inline-flex items-center px-4 py-2 bg-gray-200 dark:bg-gray-700 border rounded-md font-semibold text-xs text-gray-800 dark:text-gray-200 uppercase">
+                                        Lihat Dokumen
                                     </a>
                                 @endif
                             </div>
@@ -93,45 +78,43 @@
                         <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 pb-2">Riwayat Tanggapan</h3>
                         <div class="space-y-4 mt-4">
                             @forelse ($pengaduan->tanggapans as $tanggapan)
-                                <div class="{{ $tanggapan->user->role == 'admin' ? 'bg-gray-50 dark:bg-gray-700/50' : 'bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800' }} p-4 rounded-lg shadow-sm">
+                                <div class="{{ $tanggapan->user->role == 'admin' ? 'bg-gray-50 dark:bg-gray-700/50' : 'bg-blue-50 dark:bg-blue-900/20' }} p-4 rounded-lg">
                                     <div class="flex justify-between items-center">
                                         <p class="text-sm font-semibold">
-                                            @if($tanggapan->user->role == 'admin')
-                                                {{ $tanggapan->user->name }} (Admin)
-                                            @else
-                                                Anda (Pelapor)
-                                            @endif
+                                            {{ $tanggapan->user->role == 'admin' ? $tanggapan->user->name . ' (Admin)' : 'Anda (Pelapor)' }}
                                         </p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ $tanggapan->created_at->timezone('Asia/Jakarta')->format('d M Y, H:i') }} WIB</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ $tanggapan->created_at->diffForHumans() }}</p>
                                     </div>
-                                    {{-- [FIXED] Menggunakan kolom 'isi' yang benar --}}
-                                    <p class="mt-2 text-gray-700 dark:text-gray-300">{{ $tanggapan->isi }}</p>
+                                    {{-- [FIXED] Menggunakan kolom 'tanggapan' yang benar untuk menampilkan balasan --}}
+                                    <p class="mt-2 text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{{ $tanggapan->tanggapan }}</p>
                                 </div>
                             @empty
-                                <p class="text-sm text-gray-500">Belum ada tanggapan dari petugas.</p>
+                                <p class="text-sm text-gray-500">Belum ada tanggapan untuk laporan ini.</p>
                             @endforelse
                         </div>
                     </div>
 
-                    {{-- Form Balasan untuk User (Hanya jika status belum Selesai/Ditolak) --}}
+                    {{-- Form Balasan (Hanya jika pengaduan masih dibuka) --}}
                     @if(!in_array($pengaduan->status, ['Selesai', 'Ditolak']))
                         <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
                             <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 pb-2">Kirim Balasan</h3>
-                            {{-- [FIXED] Mengubah route dari 'user.pengaduan.balas' ke 'balasan.store' --}}
                             <form method="POST" action="{{ route('balasan.store', $pengaduan) }}">
                                 @csrf
-                                {{-- [FIXED] Mengubah nama textarea dari 'tanggapan' menjadi 'isi' --}}
-                                <textarea name="isi" rows="5" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm" placeholder="Tulis balasan atau informasi tambahan di sini..." required></textarea>
+                                {{-- [FIXED] Nama textarea adalah 'tanggapan' agar sesuai dengan controller dan database --}}
+                                <textarea name="tanggapan" rows="5" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-md shadow-sm" placeholder="Tulis balasan atau informasi tambahan di sini..." required></textarea>
+                                @error('tanggapan')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
                                 <div class="flex items-center justify-end mt-4">
                                     <button type="submit" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500">
-                                        Kirim Balasan
+                                        Kirim
                                     </button>
                                 </div>
                             </form>
                         </div>
                     @else
                        <div class="border-t border-gray-200 dark:border-gray-700 pt-6 text-center">
-                           <p class="text-sm text-gray-500">Diskusi untuk pengaduan ini telah ditutup.</p>
+                           <p class="text-sm text-gray-500 italic">Diskusi telah ditutup karena pengaduan berstatus '{{ $pengaduan->status }}'.</p>
                        </div>
                     @endif
 
