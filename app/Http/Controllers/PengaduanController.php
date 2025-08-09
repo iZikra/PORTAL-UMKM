@@ -17,8 +17,10 @@ class PengaduanController extends Controller
     // ... method index(), create(), store() yang sudah ada ...
     public function index()
     {
-        $pengaduans = Pengaduan::where('user_id', Auth::id())->latest()->get();
-        return view('dashboard', compact('pengaduans'));
+        // [FIX] The view expects a variable named '$pengaduans'.
+        // This ensures the correct data is passed to the view.
+        $pengaduans = Pengaduan::where('user_id', Auth::id())->latest()->paginate(10);
+        return view('user.index', compact('pengaduans'));
     }
 
     public function create()
@@ -29,34 +31,35 @@ class PengaduanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_usaha' => 'required|string|max:255',
             'nama_pelaku_usaha' => 'required|string|max:255',
+            'nama_usaha' => 'required|string|max:255',
             'alamat_usaha' => 'required|string',
             'judul' => 'required|string|max:255',
-            'kategori' => 'required|string',
-            'deskripsi' => 'required|string|min:3',
-            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048', // Opsional, maks 2MB
+            'kategori' => 'required|string|max:100',
+            'deskripsi' => 'required|string',
+            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
         ]);
 
         $buktiPath = null;
         if ($request->hasFile('bukti')) {
-            // Simpan file ke storage/app/public/bukti-pengaduan
-            // dan simpan path-nya ke variabel
             $buktiPath = $request->file('bukti')->store('bukti-pengaduan', 'public');
         }
 
-        $pengaduan = Pengaduan::create([
+        Pengaduan::create([
             'user_id' => Auth::id(),
-            'nama_usaha' => $request->nama_usaha,
             'nama_pelaku_usaha' => $request->nama_pelaku_usaha,
+            'nama_usaha' => $request->nama_usaha,
             'alamat_usaha' => $request->alamat_usaha,
-            'kode_unik' => 'PDU-' . strtoupper(Str::random(8)),
+            'kode_unik' => strtoupper(Str::random(10)),
             'judul' => $request->judul,
             'kategori' => $request->kategori,
-            'isi' => $request->isi,
+            // [FIX] Nama kolom di database adalah 'deskripsi', bukan 'isi'.
+            'deskripsi' => $request->deskripsi,
             'status' => 'Baru',
-            'bukti' => $buktiPath, // Simpan path file bukti ke database
+            'bukti' => $buktiPath,
         ]);
+
+        return redirect()->route('user.dashboard')->with('success', 'Pengaduan berhasil dikirim!');
 
         try {
             $admins = User::where('role', 'admin')->get();
@@ -74,10 +77,11 @@ class PengaduanController extends Controller
 
     public function show(Pengaduan $pengaduan)
     {
-        if ($pengaduan->user_id !== Auth::id()) {
-            abort(403, 'UNAUTHORIZED ACTION.');
+        // Pastikan user hanya bisa melihat pengaduannya sendiri, kecuali admin
+        if (Auth::user()->role !== 'admin' && $pengaduan->user_id !== Auth::id()) {
+            abort(403);
         }
-        $pengaduan->load('tanggapans.user');
+
         return view('user.pengaduan.show', compact('pengaduan'));
     }
 
