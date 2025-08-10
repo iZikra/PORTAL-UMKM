@@ -1,0 +1,1 @@
+<?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/layouts/partials/navbar.blade.php ENDPATH**/ ?>

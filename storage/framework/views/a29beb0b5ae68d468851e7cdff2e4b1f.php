@@ -478,5 +478,4 @@
 
         <?php echo $__env->yieldPushContent('scripts'); ?>
     </body>
-</html>
-<?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/layouts/admin.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/layouts/admin.blade.php ENDPATH**/ ?>

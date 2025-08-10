@@ -100,5 +100,4 @@
         });
     </script>
 <?php $__env->stopPush(); ?>
-
 <?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>
