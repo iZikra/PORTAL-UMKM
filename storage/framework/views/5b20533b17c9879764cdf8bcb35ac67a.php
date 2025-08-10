@@ -7,113 +7,71 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="antialiased bg-gray-50 text-gray-800">
+<body class="antialiased bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
     <div class="min-h-screen">
         
         <?php echo $__env->make('components.layouts.navigation', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
         <main>
             <div class="py-12">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-4 sm:p-6 md:p-8 text-gray-900">
-                            <h3 class="text-2xl font-bold mb-2">Pusat Bantuan UMKM</h3>
-                            <p class="mb-8 text-gray-600">Temukan panduan, tips, dan solusi untuk pertanyaan umum seputar UMKM.</p>
-                            <div class="space-y-6">
+                <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6 lg:p-8 text-gray-900 dark:text-gray-100">
+
+                            <div class="mb-10 text-center">
+                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white">Pusat Bantuan UMKM</h3>
+                                <p class="mt-3 text-lg text-gray-600 dark:text-gray-400">Temukan panduan, tips, dan solusi untuk pertanyaan umum seputar UMKM.</p>
+                            </div>
+
+                            
+                            <div x-data="{ open: null }" class="space-y-4">
                                 
-                                <div class="space-y-6">
-                        
+                                <?php
+                                    $allArticles = [
+                                        // Konten Statis
+                                        ['id' => 's1', 'kategori' => 'Perizinan & Legalitas', 'judul' => 'Langkah Mudah Mengurus NIB untuk Usaha Mikro', 'konten' => "Nomor Induk Berusaha (NIB) adalah identitas resmi yang wajib dimiliki oleh setiap pelaku usaha di Indonesia.\n\n**Bagaimana cara mengurusnya?**\n1. Siapkan Dokumen: Pastikan Anda memiliki KTP dan NPWP pribadi yang valid.\n2. Kunjungi Situs OSS: Proses pendaftaran dilakukan sepenuhnya online melalui situs resmi Online Single Submission (OSS) di oss.go.id.\n3. Buat Akun: Klik \"Daftar\" dan ikuti proses pembuatan akun dengan memasukkan data diri sesuai KTP. Lakukan aktivasi melalui email.\n4. Isi Formulir Pendaftaran: Setelah login, isi semua data yang diperlukan, seperti data usaha, bidang usaha (KBLI), dan lokasi.\n5. NIB Terbit: Setelah semua data terisi dengan benar, sistem akan secara otomatis menerbitkan NIB yang bisa langsung Anda unduh."],
+                                        ['id' => 's2', 'kategori' => 'Permodalan & Keuangan', 'judul' => '3 Cara Mendapatkan Modal Awal untuk UMKM', 'konten' => "Berikut adalah tiga sumber permodalan yang paling umum dan bisa Anda coba:\n\n**Kredit Usaha Rakyat (KUR)**: Program pinjaman bersubsidi dari pemerintah dengan bunga sangat rendah (sekitar 6% per tahun).\n\n**Lembaga Keuangan Mikro (LKM)**: Seperti koperasi simpan pinjam atau BPR yang menawarkan pinjaman dengan plafon lebih kecil dan proses yang lebih fleksibel.\n\n**PNM Mekaar**: Dikhususkan untuk perempuan pelaku usaha mikro, memberikan pinjaman modal tanpa agunan dengan sistem kelompok."],
+                                        ['id' => 's3', 'kategori' => 'Pemasaran & Penjualan', 'judul' => 'Tips Pemasaran Digital Murah untuk UMKM Pemula', 'konten' => "Manfaatkan platform online untuk menjangkau lebih banyak pelanggan dengan biaya minimal.\n\n**Optimalkan Media Sosial**: Buat akun bisnis di Instagram, Facebook, atau TikTok. Unggah foto produk yang menarik dan aktif berinteraksi.\n\n**Daftar di Google Business Profile**: Daftarkan lokasi usaha Anda di Google Maps secara gratis untuk meningkatkan visibilitas.\n\n**Gunakan WhatsApp Business**: Pisahkan nomor pribadi dengan nomor bisnis dan gunakan fitur katalog untuk terlihat profesional.\n\n**Bergabung dengan Marketplace**: Manfaatkan platform seperti Tokopedia, Shopee, atau Bukalapak untuk menjual produk Anda."],
+                                    ];
 
-                        <div class="p-4 sm:p-6 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
-                            <p class="text-sm font-semibold text-indigo-600 mb-1">Perizinan & Legalitas</p>
-                            <h4 class="text-xl font-bold text-gray-800">Langkah Mudah Mengurus NIB untuk Usaha Mikro</h4>
-                            <div class="mt-3 text-gray-700 leading-relaxed">
-                                Nomor Induk Berusaha (NIB) adalah identitas resmi yang wajib dimiliki oleh setiap pelaku usaha di Indonesia.
-                                <br><br>
-                                **Bagaimana cara mengurusnya?**<br>
-                                1. Siapkan Dokumen: Pastikan Anda memiliki KTP dan NPWP pribadi yang valid.<br>
-                                2. Kunjungi Situs OSS: Proses pendaftaran dilakukan sepenuhnya online melalui situs resmi Online Single Submission (OSS) di oss.go.id.<br>
-                                3. Buat Akun: Klik "Daftar" dan ikuti proses pembuatan akun dengan memasukkan data diri sesuai KTP. Lakukan aktivasi melalui email.<br>
-                                4. Isi Formulir Pendaftaran: Setelah login, isi semua data yang diperlukan, seperti data usaha, bidang usaha (KBLI), dan lokasi.<br>
-                                5. NIB Terbit: Setelah semua data terisi dengan benar, sistem akan secara otomatis menerbitkan NIB yang bisa langsung Anda unduh.
-                            </div>
-                        </div>
+                                    // Menggabungkan artikel dinamis dari database
+                                    foreach ($articles as $article) {
+                                        $allArticles[] = ['id' => 'd' . $article->id, 'kategori' => $article->category . ' (Dari Admin)', 'judul' => $article->title, 'konten' => $article->content];
+                                    }
+                                ?>
 
-                        <div class="p-4 sm:p-6 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
-                           <p class="text-sm font-semibold text-indigo-600 mb-1">Permodalan & Keuangan</p>
-                            <h4 class="text-xl font-bold text-gray-800">3 Cara Mendapatkan Modal Awal untuk UMKM</h4>
-                            <div class="mt-3 text-gray-700 leading-relaxed">
-                                Berikut adalah tiga sumber permodalan yang paling umum dan bisa Anda coba:<br><br>
-                                **Kredit Usaha Rakyat (KUR)**: Program pinjaman bersubsidi dari pemerintah dengan bunga sangat rendah (sekitar 6% per tahun).<br><br>
-                                **Lembaga Keuangan Mikro (LKM)**: Seperti koperasi simpan pinjam atau BPR yang menawarkan pinjaman dengan plafon lebih kecil dan proses yang lebih fleksibel.<br><br>
-                                **PNM Mekaar**: Dikhususkan untuk perempuan pelaku usaha mikro, memberikan pinjaman modal tanpa agunan dengan sistem kelompok.
-                            </div>
-                        </div>
+                                <?php $__empty_1 = true; $__currentLoopData = $allArticles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                    <div class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                                        <button @click="open = (open === '<?php echo e($item['id']); ?>' ? null : '<?php echo e($item['id']); ?>')" class="w-full flex justify-between items-center p-5 text-left font-semibold text-gray-800 dark:text-gray-200 transition-colors duration-200 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                                            <span><?php echo e($item['judul']); ?></span>
+                                            <svg :class="{'rotate-180': open === '<?php echo e($item['id']); ?>'}" class="w-5 h-5 text-gray-500 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                        </button>
+                                        
+                                        <div x-show="open === '<?php echo e($item['id']); ?>'" x-collapse.duration.500ms>
+                                            <div class="p-5 pt-0">
+                                                <p class="text-sm font-semibold text-indigo-600 mb-2"><?php echo e($item['kategori']); ?></p>
+                                                <div class="text-gray-600 dark:text-gray-400 prose dark:prose-invert max-w-none">
+                                                    <?php echo nl2br(e($item['konten'])); ?>
 
-                        <div class="p-4 sm:p-6 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
-                            <p class="text-sm font-semibold text-indigo-600 mb-1">Pemasaran & Penjualan</p>
-                            <h4 class="text-xl font-bold text-gray-800">Tips Pemasaran Digital Murah untuk UMKM Pemula</h4>
-                            <div class="mt-3 text-gray-700 leading-relaxed">
-                                Manfaatkan platform online untuk menjangkau lebih banyak pelanggan dengan biaya minimal.<br><br>
-                                **Optimalkan Media Sosial**: Buat akun bisnis di Instagram, Facebook, atau TikTok. Unggah foto produk yang menarik dan aktif berinteraksi.<br><br>
-                                **Daftar di Google Business Profile**: Daftarkan lokasi usaha Anda di Google Maps secara gratis untuk meningkatkan visibilitas.<br><br>
-                                **Gunakan WhatsApp Business**: Pisahkan nomor pribadi dengan nomor bisnis dan gunakan fitur katalog untuk terlihat profesional.<br><br>
-                                **Bergabung dengan Marketplace**: Manfaatkan platform seperti Tokopedia, Shopee, atau Bukalapak untuk menjual produk Anda.
-                            </div>
-                        </div>
-
-                        <div class="p-4 sm:p-6 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
-                            <p class="text-sm font-semibold text-indigo-600 mb-1">Keuangan & Akuntansi</p>
-                            <h4 class="text-xl font-bold text-gray-800">Wajib Tahu! 3 Fondasi Keuangan untuk UMKM Sehat</h4>
-                            <div class="mt-3 text-gray-700 leading-relaxed">
-                                Manajemen keuangan yang baik adalah jantung dari bisnis yang sehat. Mulailah dengan tiga kebiasaan sederhana ini:<br><br>
-                                1. **Pisahkan Rekening Pribadi dan Bisnis**: Ini adalah aturan nomor satu. Jangan pernah mencampur uang usaha dengan uang pribadi.<br><br>
-                                2. **Lakukan Pencatatan Harian (Bookkeeping)**: Catat semua transaksi setiap hari, sekecil apa pun, menggunakan buku atau spreadsheet.<br><br>
-                                3. **Hitung Harga Pokok Penjualan (HPP) dengan Benar**: Ketahui modal pasti untuk satu produk sebelum menentukan harga jual.
-                            </div>
-                        </div>
-
-                        <div class="p-4 sm:p-6 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
-                           <p class="text-sm font-semibold text-indigo-600 mb-1">Layanan & Pelanggan</p>
-                            <h4 class="text-xl font-bold text-gray-800">Cara Mengubah Keluhan Pelanggan Menjadi Keuntungan</h4>
-                            <div class="mt-3 text-gray-700 leading-relaxed">
-                                Setiap keluhan adalah kesempatan emas. Gunakan metode **S-M-S (Simpati, Solusi, Senyum)**:<br><br>
-                                1. **Tunjukkan SIMPATI**: Dengarkan, ucapkan terima kasih, dan minta maaf atas ketidaknyamanannya.<br><br>
-                                2. **Tawarkan SOLUSI**: Berikan solusi nyata seperti penggantian produk, refund, atau diskon. Ini menunjukkan Anda bertanggung jawab.<br><br>
-                                3. **Akhiri dengan SENYUM**: Pastikan pelanggan puas dengan penanganan Anda untuk membangun loyalitas.
-                            </div>
-                        </div>
-
-                        <div class="p-4 sm:p-6 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
-                            <p class="text-sm font-semibold text-indigo-600 mb-1">Operasional & Manajemen</p>
-                            <h4 class="text-xl font-bold text-gray-800">Stok Aman, Hati Tenang: Tips Mengelola Persediaan Barang</h4>
-                            <div class="mt-3 text-gray-700 leading-relaxed">
-                                Manajemen stok yang buruk bisa menyebabkan kerugian. Coba tips berikut:<br><br>
-                                1. **Gunakan Sistem "First-In, First-Out" (FIFO)**: Barang yang pertama masuk adalah yang pertama dijual, terutama untuk produk makanan.<br><br>
-                                2. **Buat Kartu Stok Sederhana**: Catat barang masuk dan keluar untuk setiap produk agar sisa stok selalu terpantau.<br><br>
-                                3. **Tentukan Stok Minimum**: Tetapkan jumlah minimum untuk setiap produk sebagai sinyal untuk melakukan pemesanan ulang (restock).
-                            </div>
-                        </div>
-
-                                
-
-                                
-                                <?php $__empty_1 = true; $__currentLoopData = $articles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $article): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                    <div class="p-4 sm:p-6 bg-yellow-50 rounded-lg shadow-sm border border-yellow-300">
-                                        <?php if($article->category): ?>
-                                            <p class="text-sm font-semibold text-yellow-800 mb-1"><?php echo e($article->category); ?> (Dari Admin)</p>
-                                        <?php endif; ?>
-                                        <h4 class="text-xl font-bold text-gray-800"><?php echo e($article->title); ?></h4>
-                                        <div class="mt-3 text-gray-700 leading-relaxed">
-                                            <?php echo nl2br(e($article->content)); ?>
-
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                                    
+                                    <div class="text-center py-16 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg">
+                                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                          <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.79 4 4s-1.79 4-4 4-4-1.79-4-4a4.01 4.01 0 011.02-2.625z" />
+                                          <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 100-18 9 9 0 000 18z" />
+                                        </svg>
+                                        <h3 class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">Belum ada artikel</h3>
+                                        <p class="mt-1 text-sm text-gray-500">Silakan periksa kembali nanti.</p>
+                                    </div>
                                 <?php endif; ?>
                             </div>
+
                         </div>
                     </div>
                 </div>

@@ -14,7 +14,7 @@
         <!-- Scripts -->
         <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased animate-popup">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             
             <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">

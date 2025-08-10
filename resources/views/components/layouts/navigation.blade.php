@@ -6,10 +6,10 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     {{-- [FIXED] Menyamakan ukuran font logo dengan menu navigasi --}}
-                    <a href="{{ Auth::check() && Auth::user()->role === 'admin' ? route('admin.dashboard') : route('home') }}">
+                    <div href="{{ Auth::check() && Auth::user()->role === 'admin' ? route('admin.dashboard') : route('home') }}">
                         {{-- Mengubah h1 dan menyesuaikan kelas font agar konsisten --}}
                         <div class="text-sm font-medium text-gray-900 dark:text-gray-100">Portal UMKM</div>
-                    </a>
+                    </div>
                 </div>
 
                 <!-- Navigation Links -->

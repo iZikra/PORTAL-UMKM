@@ -6,10 +6,10 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     
-                    <a href="<?php echo e(Auth::check() && Auth::user()->role === 'admin' ? route('admin.dashboard') : route('home')); ?>">
+                    <div href="<?php echo e(Auth::check() && Auth::user()->role === 'admin' ? route('admin.dashboard') : route('home')); ?>">
                         
                         <div class="text-sm font-medium text-gray-900 dark:text-gray-100">Portal UMKM</div>
-                    </a>
+                    </div>
                 </div>
 
                 <!-- Navigation Links -->

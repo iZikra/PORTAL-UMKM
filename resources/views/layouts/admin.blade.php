@@ -16,7 +16,6 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            {{-- Mengembalikan navigasi langsung ke dalam tata letak utama --}}
             <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,19 +30,20 @@
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                                {{-- [FIX] Menggunakan request()->is() untuk mencocokkan URL path secara langsung --}}
+                                <x-nav-link :href="route('admin.dashboard')" :active="request()->is('admin/dashboard')">
                                     {{ __('Dashboard') }}
                                 </x-nav-link>
-                                <x-nav-link :href="route('admin.pengaduan.index')" :active="request()->routeIs('admin.pengaduan.*')">
+                                <x-nav-link :href="route('admin.pengaduan.index')" :active="request()->is('admin/pengaduan*')">
                                     {{ __('Kelola Pengaduan') }}
                                 </x-nav-link>
-                                <x-nav-link :href="route('admin.knowledge-base.index')" :active="request()->routeIs('admin.knowledge-base.*')">
+                                <x-nav-link :href="route('admin.knowledge-base.index')" :active="request()->is('admin/knowledge-base*')">
                                     {{ __('Basis Pengetahuan') }}
                                 </x-nav-link>
-                                <x-nav-link :href="route('admin.faq.index')" :active="request()->routeIs('admin.faq.*')">
+                                <x-nav-link :href="route('admin.faq.index')" :active="request()->is('admin/faq*')">
                                     {{ __('Kelola FAQ') }}
                                 </x-nav-link>
-                                <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                                <x-nav-link :href="route('admin.users.index')" :active="request()->is('admin/users*')">
                                     {{ __('Kelola Pengguna') }}
                                 </x-nav-link>
                             </div>
@@ -91,19 +91,19 @@
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
-                        <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                        <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->is('admin/dashboard')">
                             {{ __('Dashboard') }}
                         </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('admin.pengaduan.index')" :active="request()->routeIs('admin.pengaduan.*')">
+                        <x-responsive-nav-link :href="route('admin.pengaduan.index')" :active="request()->is('admin/pengaduan*')">
                             {{ __('Kelola Pengaduan') }}
                         </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('admin.knowledge-base.index')" :active="request()->routeIs('admin.knowledge-base.*')">
+                        <x-responsive-nav-link :href="route('admin.knowledge-base.index')" :active="request()->is('admin/knowledge-base*')">
                             {{ __('Basis Pengetahuan') }}
                         </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('admin.faq.index')" :active="request()->routeIs('admin.faq.*')">
+                        <x-responsive-nav-link :href="route('admin.faq.index')" :active="request()->is('admin/faq*')">
                             {{ __('Kelola FAQ') }}
                         </x-responsive-nav-link>
-                        <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                        <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->is('admin/users*')">
                             {{ __('Kelola Pengguna') }}
                         </x-responsive-nav-link>
                     </div>
@@ -141,6 +141,37 @@
                 @yield('content')
             </main>
         </div>
+
+        @if (session('success'))
+            <div x-data="{ show: true }"
+                 x-init="setTimeout(() => show = false, 4000)"
+                 x-show="show"
+                 x-transition:enter="transform ease-out duration-300 transition"
+                 x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+                 x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+                 x-transition:leave="transition ease-in duration-100"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="fixed top-5 right-5 z-50 bg-green-500 text-white py-2 px-4 rounded-xl text-sm"
+                 role="alert">
+                <p>{{ session('success') }}</p>
+            </div>
+        @endif
+        @if (session('error'))
+            <div x-data="{ show: true }"
+                 x-init="setTimeout(() => show = false, 4000)"
+                 x-show="show"
+                 x-transition:enter="transform ease-out duration-300 transition"
+                 x-transition:enter-start="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
+                 x-transition:enter-end="translate-y-0 opacity-100 sm:translate-x-0"
+                 x-transition:leave="transition ease-in duration-100"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="fixed top-5 right-5 z-50 bg-red-500 text-white py-2 px-4 rounded-xl text-sm"
+                 role="alert">
+                <p>{{ session('error') }}</p>
+            </div>
+        @endif
 
         @stack('scripts')
     </body>

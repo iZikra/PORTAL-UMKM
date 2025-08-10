@@ -23,17 +23,16 @@
         <!-- Konten Utama -->
         <main>
             <!-- Hero Section -->
-            <section class="relative flex content-center items-center justify-center" style="min-height: 75vh;">
-                <div class="absolute top-0 w-full h-full bg-center bg-cover" style="background-image: url('<?php echo e(asset('images/login-bg.jpg')); ?>');">
-                    <span class="w-full h-full absolute opacity-75 bg-black"></span>
-                </div>
+            
+            <section class="relative flex content-center items-center justify-center bg-gradient-to-r from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-900" style="min-height: 75vh;">
                 <div class="container relative mx-auto">
                     <div class="items-center flex flex-wrap">
                         <div class="w-full lg:w-8/12 px-4 ml-auto mr-auto text-center">
-                            <h1 class="text-white font-extrabold text-4xl md:text-5xl leading-tight">
+                            
+                            <h1 class="text-gray-800 dark:text-white font-extrabold text-4xl md:text-5xl leading-tight">
                                 Portal Layanan Pengaduan UMKM
                             </h1>
-                            <p class="mt-4 text-lg text-gray-300">
+                            <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
                                 Wadah untuk menyampaikan aspirasi, keluhan, dan mendapatkan solusi untuk kemajuan usaha Anda.
                             </p>
                             <div class="mt-8 flex justify-center">
@@ -102,4 +101,5 @@
         </footer>
     </div>
 </body>
-</html><?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/welcome.blade.php ENDPATH**/ ?>
+</html>
+<?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/welcome.blade.php ENDPATH**/ ?>

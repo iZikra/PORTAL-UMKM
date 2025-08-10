@@ -17,23 +17,22 @@
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
         
-        {{-- [FIX] Menggunakan komponen navigasi terpusat untuk konsistensi --}}
+        {{-- Menggunakan komponen navigasi terpusat untuk konsistensi --}}
         @include('components.layouts.navigation')
 
         <!-- Konten Utama -->
         <main>
             <!-- Hero Section -->
-            <section class="relative flex content-center items-center justify-center" style="min-height: 75vh;">
-                <div class="absolute top-0 w-full h-full bg-center bg-cover" style="background-image: url('{{ asset('images/login-bg.jpg') }}');">
-                    <span class="w-full h-full absolute opacity-75 bg-black"></span>
-                </div>
+            {{-- [FIX] Mengganti background gambar gelap dengan gradient yang lebih cerah --}}
+            <section class="relative flex content-center items-center justify-center bg-gradient-to-r from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-900" style="min-height: 75vh;">
                 <div class="container relative mx-auto">
                     <div class="items-center flex flex-wrap">
                         <div class="w-full lg:w-8/12 px-4 ml-auto mr-auto text-center">
-                            <h1 class="text-white font-extrabold text-4xl md:text-5xl leading-tight">
+                            {{-- [FIX] Menyesuaikan warna teks agar kontras dengan background baru --}}
+                            <h1 class="text-gray-800 dark:text-white font-extrabold text-4xl md:text-5xl leading-tight">
                                 Portal Layanan Pengaduan UMKM
                             </h1>
-                            <p class="mt-4 text-lg text-gray-300">
+                            <p class="mt-4 text-lg text-gray-600 dark:text-gray-300">
                                 Wadah untuk menyampaikan aspirasi, keluhan, dan mendapatkan solusi untuk kemajuan usaha Anda.
                             </p>
                             <div class="mt-8 flex justify-center">

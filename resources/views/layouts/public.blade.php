@@ -1,49 +1,73 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>@yield('title', 'Portal UMKM')</title>
-        
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-        
-        <!-- AlpineJS Collapse Plugin -->
-        <script src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
-    </head>
-    <body class="antialiased font-sans bg-gray-100 dark:bg-gray-900">
-        <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            
-            <!-- Header Tunggal -->
-            <header class="flex justify-between items-center mb-8 pb-4 border-b dark:border-gray-700">
-                <a href="/" class="flex items-center">
-                    <x-application-logo class="block h-10 w-auto" />
-                    <span class="ml-3 text-xl font-semibold text-gray-800 dark:text-gray-200">Portal UMKM</span>
-                </a>
-                <nav>
-                    @if (Route::has('login'))
-                        @auth
-                            <a href="{{ url('/dashboard') }}" class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white font-medium">Dashboard</a>
-                        @else
-                            <a href="{{ route('login') }}" class="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white font-medium">Log in</a>
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}" class="ml-4 inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">Register</a>
-                            @endif
-                        @endauth
-                    @endif
-                </nav>
-            </header>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-            <!-- Konten Halaman akan Muncul di Sini -->
-            <main>
-                @yield('content')
-            </main>
+    <title>{{ config('app.name', 'Portal Layanan UMKM') }}</title>
 
-             <!-- Footer -->
-            <footer class="py-16 text-center text-sm text-gray-500 dark:text-gray-400">
-                <p>&copy; {{ date('Y') }} {{ config('app.name', 'Portal UMKM') }}. All Rights Reserved.</p>
-            </footer>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        </div>
-    </body>
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-900 antialiased bg-gray-50">
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Logo -->
+                    <div class="flex items-center">
+                        <a href="{{ route('home') }}" class="flex items-center space-x-2">
+                            <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                            <span class="font-semibold text-lg text-gray-800">Portal UMKM</span>
+                        </a>
+                    </div>
+
+                    <!-- Navigation Links (Desktop) -->
+                    <nav class="hidden md:flex items-center space-x-8">
+                        <a href="{{ route('home') }}" class="text-gray-600 hover:text-blue-600 transition">Beranda</a>
+                        <a href="{{ route('knowledge-base.public') }}" class="text-gray-600 hover:text-blue-600 transition">Basis Pengetahuan</a>
+                        <a href="{{ route('faq.public') }}" class="text-gray-600 hover:text-blue-600 transition">FAQ</a>
+                    </nav>
+
+                    <!-- Auth Links (Desktop) -->
+                    <div class="hidden md:flex items-center space-x-4">
+                        <a href="{{ route('login') }}" class="text-gray-600 hover:text-blue-600 transition">Log in</a>
+                        <a href="{{ route('register') }}" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition shadow-sm">
+                            Register
+                        </a>
+                    </div>
+                    
+                    <!-- Hamburger (Mobile) -->
+                    <div class="md:hidden">
+                        {{-- Implementasi hamburger jika diperlukan --}}
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="flex-grow">
+            {{ $slot }}
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t">
+            <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center text-gray-500">
+                &copy; {{ date('Y') }} {{ config('app.name', 'Portal Layanan UMKM') }}. All rights reserved.
+            </div>
+        </footer>
+    </div>
+</body>
 </html>
