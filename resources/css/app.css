@@ -2,20 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes fadeIn {
+/* Definisi animasi global */
+@keyframes pageFadeIn {
     from {
-    transform: scale(0.98);
-    opacity: 0;
+        opacity: 0;
+        transform: translateY(20px);
     }
     to {
-        opacity: 1;
-        transform: scale(1);
+        opacity: 2.5;
+        transform: translateY(0);
     }
 }
-.animate-popup {
-  animation: popUpAnimation 0.3s ease-out;
-}
 
-.fade-in {
-    animation: fadeIn 0.5s ease-out forwards;
+/* Kelas yang akan ditambahkan ke <body> secara dinamis oleh JavaScript */
+.animate-page-fade-in {
+    animation: pageFadeIn 1s ease-out forwards;
 }

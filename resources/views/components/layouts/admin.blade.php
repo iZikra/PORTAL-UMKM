@@ -13,8 +13,23 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+            <style>
+        @keyframes fadeInFromBottom {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .content-fade-in {
+            animation: fadeInFromBottom 0.5s ease-out backwards;
+        }
+    </style>
     </head>
-    <body class="font-sans antialiased animate-popup">
+    <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             {{-- Bilah navigasi terpusat untuk semua halaman admin --}}
             <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
@@ -151,7 +166,7 @@
             @endif
 
             <!-- Page Content -->
-            <main>
+            <main class="animate-page-enter">
                 {{ $slot }}
             </main>
         </div>
