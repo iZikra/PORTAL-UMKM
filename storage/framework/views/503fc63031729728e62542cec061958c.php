@@ -10,35 +10,48 @@
 <?php $__env->startSection('content'); ?>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Stat Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-6">
-                <a href="<?php echo e(route('admin.pengaduan.index')); ?>" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition ease-in-out duration-150">
-                    <h3 class="text-lg font-medium text-gray-500 dark:text-gray-400"><?php echo e(__('Total Pengaduan')); ?></h3>
-                    <p class="mt-1 text-3xl font-semibold text-gray-900 dark:text-gray-100"><?php echo e($totalPengaduan); ?></p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6 mb-6">
+
+                
+                <a href="<?php echo e(route('admin.users.index')); ?>" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                    <h3 class="text-lg font-medium text-gray-500 dark:text-gray-400">Total Pengguna</h3>
+                    <p class="mt-1 text-3xl font-semibold text-gray-900 dark:text-white"><?php echo e($totalPengguna); ?></p>
                 </a>
-                <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'baru'])); ?>" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition ease-in-out duration-150">
-                    <h3 class="text-lg font-medium text-blue-500"><?php echo e(__('Pengaduan Baru')); ?></h3>
-                    <p class="mt-1 text-3xl font-semibold text-blue-500"><?php echo e($pengaduanBaru); ?></p>
+
+                
+                <a href="<?php echo e(route('admin.pengaduan.index')); ?>" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                    <h3 class="text-lg font-medium text-gray-500 dark:text-gray-400">Total Pengaduan</h3>
+                    <p class="mt-1 text-3xl font-semibold text-gray-900 dark:text-white"><?php echo e($totalPengaduan); ?></p>
                 </a>
-                <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'diproses'])); ?>" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition ease-in-out duration-150">
-                    <h3 class="text-lg font-medium text-yellow-500"><?php echo e(__('Diproses')); ?></h3>
-                    <p class="mt-1 text-3xl font-semibold text-yellow-500"><?php echo e($pengaduanDiproses); ?></p>
+
+                
+                <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'baru'])); ?>" class="bg-blue-100 dark:bg-blue-900/50 overflow-hidden shadow-sm sm:rounded-lg p-6 hover:bg-blue-200/80 dark:hover:bg-blue-900/80 transition">
+                    <h3 class="text-lg font-medium text-blue-800 dark:text-blue-300">Baru</h3>
+                    <p class="mt-1 text-3xl font-semibold text-blue-900 dark:text-blue-200"><?php echo e($pengaduanBaru); ?></p>
                 </a>
-                <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'selesai'])); ?>" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition ease-in-out duration-150">
-                    <h3 class="text-lg font-medium text-green-500"><?php echo e(__('Selesai')); ?></h3>
-                    <p class="mt-1 text-3xl font-semibold text-green-500"><?php echo e($pengaduanSelesai); ?></p>
+
+                
+                <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'diproses'])); ?>" class="bg-yellow-100 dark:bg-yellow-900/50 overflow-hidden shadow-sm sm:rounded-lg p-6 hover:bg-yellow-200/80 dark:hover:bg-yellow-900/80 transition">
+                    <h3 class="text-lg font-medium text-yellow-800 dark:text-yellow-300">Diproses</h3>
+                    <p class="mt-1 text-3xl font-semibold text-yellow-900 dark:text-yellow-200"><?php echo e($pengaduanDiproses); ?></p>
                 </a>
-                <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'ditolak'])); ?>" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition ease-in-out duration-150">
-                    <h3 class="text-lg font-medium text-red-500"><?php echo e(__('Ditolak')); ?></h3>
-                    <p class="mt-1 text-3xl font-semibold text-red-500"><?php echo e($pengaduanDitolak); ?></p>
+
+                
+                <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'selesai'])); ?>" class="bg-green-100 dark:bg-green-900/50 overflow-hidden shadow-sm sm:rounded-lg p-6 hover:bg-green-200/80 dark:hover:bg-green-900/80 transition">
+                    <h3 class="text-lg font-medium text-green-800 dark:text-green-300">Selesai</h3>
+                    <p class="mt-1 text-3xl font-semibold text-green-900 dark:text-green-200"><?php echo e($pengaduanSelesai); ?></p>
+                </a>
+
+                
+                <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'ditolak'])); ?>" class="bg-red-100 dark:bg-red-900/50 overflow-hidden shadow-sm sm:rounded-lg p-6 hover:bg-red-200/80 dark:hover:bg-red-900/80 transition">
+                    <h3 class="text-lg font-medium text-red-800 dark:text-red-300">Ditolak</h3>
+                    <p class="mt-1 text-3xl font-semibold text-red-900 dark:text-red-200"><?php echo e($pengaduanDitolak); ?></p>
                 </a>
             </div>
 
-            <!-- Chart -->
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4 text-center"><?php echo e(__('Pengaduan Berdasarkan Kategori')); ?></h3>
-                    
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4 text-center">Pengaduan Berdasarkan Kategori</h3>
                     <div class="relative mx-auto" style="height:500px; width:100%; max-width:500px;">
                         <canvas id="kategoriChart"></canvas>
                     </div>
@@ -54,6 +67,10 @@
         document.addEventListener('DOMContentLoaded', function () {
             const ctx = document.getElementById('kategoriChart').getContext('2d');
             const data = <?php echo json_encode($kategoriCounts, 15, 512) ?>;
+            
+            // Mengatur warna teks chart agar sesuai dengan dark mode
+            const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const textColor = isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)';
 
             const chartData = {
                 labels: Object.keys(data),
@@ -61,22 +78,15 @@
                     label: 'Jumlah Pengaduan',
                     data: Object.values(data),
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.7)',
-                        'rgba(54, 162, 235, 0.7)',
-                        'rgba(255, 206, 86, 0.7)',
-                        'rgba(75, 192, 192, 0.7)',
-                        'rgba(153, 102, 255, 0.7)',
-                        'rgba(255, 159, 64, 0.7)'
+                        'rgba(59, 130, 246, 0.7)',  // blue-500
+                        'rgba(234, 179, 8, 0.7)',   // yellow-500
+                        'rgba(34, 197, 94, 0.7)',  // green-500
+                        'rgba(139, 92, 246, 0.7)', // violet-500
+                        'rgba(239, 68, 68, 0.7)',   // red-500
+                        'rgba(249, 115, 22, 0.7)'  // orange-500
                     ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
+                    borderColor: '#fff',
+                    borderWidth: 2
                 }]
             };
 
@@ -89,10 +99,9 @@
                     plugins: {
                         legend: {
                             position: 'top',
-                        },
-                        title: {
-                            display: true,
-                            text: 'Distribusi Kategori Pengaduan'
+                            labels: {
+                                color: textColor
+                            }
                         }
                     }
                 }

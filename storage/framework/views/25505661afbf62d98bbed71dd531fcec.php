@@ -13,25 +13,24 @@
 
         <!-- Scripts -->
         <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
-            <style>
-        @keyframes fadeInFromBottom {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
+        <style>
+            @keyframes fadeInFromBottom {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            .content-fade-in {
+                animation: fadeInFromBottom 0.5s ease-out backwards;
             }
-        }
-        .content-fade-in {
-            animation: fadeInFromBottom 0.5s ease-out backwards;
-        }
-    </style>
+        </style>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            
             <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,7 +39,8 @@
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 
-                                <?php if (isset($component)) { $__componentOriginal8892e718f3d0d7a916180885c6f012e7 = $component; } ?>
+                                <a href="<?php echo e(route('admin.dashboard')); ?>">
+                                    <?php if (isset($component)) { $__componentOriginal8892e718f3d0d7a916180885c6f012e7 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal8892e718f3d0d7a916180885c6f012e7 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.application-logo','data' => ['class' => 'block h-9 w-auto fill-current text-gray-800 dark:text-gray-200']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('application-logo'); ?>
@@ -60,6 +60,7 @@
 <?php $component = $__componentOriginal8892e718f3d0d7a916180885c6f012e7; ?>
 <?php unset($__componentOriginal8892e718f3d0d7a916180885c6f012e7); ?>
 <?php endif; ?>
+                                </a>
                             </div>
 
                             <!-- Navigation Links -->
@@ -192,7 +193,6 @@
                                  <?php $__env->slot('trigger', null, []); ?> 
                                     <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                                         <div><?php echo e(Auth::user()->name); ?></div>
-
                                         <div class="ms-1">
                                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -224,11 +224,8 @@
 <?php $component = $__componentOriginal68cb1971a2b92c9735f83359058f7108; ?>
 <?php unset($__componentOriginal68cb1971a2b92c9735f83359058f7108); ?>
 <?php endif; ?>
-
-                                    <!-- Authentication -->
                                     <form method="POST" action="<?php echo e(route('logout')); ?>">
                                         <?php echo csrf_field(); ?>
-
                                         <?php if (isset($component)) { $__componentOriginal68cb1971a2b92c9735f83359058f7108 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal68cb1971a2b92c9735f83359058f7108 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.dropdown-link','data' => ['href' => route('logout'),'onclick' => 'event.preventDefault();
@@ -400,7 +397,6 @@
                             <div class="font-medium text-base text-gray-800 dark:text-gray-200"><?php echo e(Auth::user()->name); ?></div>
                             <div class="font-medium text-sm text-gray-500"><?php echo e(Auth::user()->email); ?></div>
                         </div>
-
                         <div class="mt-3 space-y-1">
                             <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
@@ -424,11 +420,8 @@
 <?php $component = $__componentOriginald69b52d99510f1e7cd3d80070b28ca18; ?>
 <?php unset($__componentOriginald69b52d99510f1e7cd3d80070b28ca18); ?>
 <?php endif; ?>
-
-                            <!-- Authentication -->
                             <form method="POST" action="<?php echo e(route('logout')); ?>">
                                 <?php echo csrf_field(); ?>
-
                                 <?php if (isset($component)) { $__componentOriginald69b52d99510f1e7cd3d80070b28ca18 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginald69b52d99510f1e7cd3d80070b28ca18 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.responsive-nav-link','data' => ['href' => route('logout'),'onclick' => 'event.preventDefault();
@@ -460,21 +453,20 @@
             </nav>
 
             <!-- Page Heading -->
-            <?php if(isset($header)): ?>
+            
+            <?php if (! empty(trim($__env->yieldContent('header')))): ?>
                 <header class="bg-white dark:bg-gray-800 shadow">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        <?php echo e($header); ?>
-
+                        <?php echo $__env->yieldContent('header'); ?>
                     </div>
                 </header>
             <?php endif; ?>
 
             <!-- Page Content -->
-            <main class="animate-page-enter">
-                <?php echo e($slot); ?>
-
+            
+            <main class="content-fade-in">
+                <?php echo $__env->yieldContent('content'); ?>
             </main>
         </div>
     </body>
-</html>
-<?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/components/layouts/admin.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/components/layouts/admin.blade.php ENDPATH**/ ?>

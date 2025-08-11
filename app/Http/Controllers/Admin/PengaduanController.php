@@ -15,48 +15,38 @@ class PengaduanController extends Controller
      */
     // app/Http/Controllers/Admin/PengaduanController.php
 
-public function index(Request $request) // Tambahkan Request $request
+public function index(Request $request)
 {
-    $query = Pengaduan::query()->latest();
+    // 1. Mengambil input dari URL untuk filter dan pencarian
+    $status = $request->input('status');
+    $search = $request->input('search');
 
-        // Menerapkan filter berdasarkan status jika ada
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
+    // 2. Memulai satu query builder yang akan kita gunakan
+    $query = Pengaduan::query()->with('user'); // Eager load relasi 'user' untuk efisiensi
 
-    if ($request->filled('search')) {
-            $searchTerm = $request->search;
-            $query->where(function ($q) use ($searchTerm) {
-                $q->where('nama_usaha', 'like', "%{$searchTerm}%")
-                  ->orWhere('kategori', 'like', "%{$searchTerm}%");
-            });
-        }
-        $pengaduans = $query->paginate(10)->withQueryString();
-
-
-    // Mulai query builder
-    $query = Pengaduan::with('user');
-
-    // Terapkan filter berdasarkan status jika ada
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
+    // 3. Menerapkan filter berdasarkan status jika ada
+    if ($status) {
+        $query->where('status', $status);
     }
 
-    // Terapkan filter berdasarkan kata kunci pencarian jika ada
-    if ($request->filled('search')) {
-        $searchTerm = $request->search;
-        $query->where(function ($q) use ($searchTerm) {
-            $q->where('nama_usaha', 'like', "%{$searchTerm}%")
-              ->orWhere('kategori', 'like', "%{$searchTerm}%")
-              ->orWhere('judul', 'like', "%{$searchTerm}%");
+    // 4. Menerapkan filter pencarian jika ada
+    if ($search) {
+        // Mencari di beberapa kolom sekaligus
+        $query->where(function ($q) use ($search) {
+            $q->where('judul', 'like', "%{$search}%")
+              ->orWhere('kategori', 'like', "%{$search}%")
+              // Mencari juga berdasarkan nama pengguna yang terkait
+              ->orWhereHas('user', function ($userQuery) use ($search) {
+                  $userQuery->where('name', 'like', "%{$search}%");
+              });
         });
     }
 
-    // Ambil data yang sudah difilter, urutkan, dan paginasi
-    // Gunakan appends() agar parameter filter tetap ada saat pindah halaman
+    // 5. Mengambil data, mengurutkan dari yang terbaru, dan melakukan paginasi
     $pengaduans = $query->latest()->paginate(10)->withQueryString();
 
-    return view('admin.pengaduan.index', compact('pengaduans'));
+    // 6. Mengirim semua data yang diperlukan ke view
+    return view('admin.pengaduan.index', compact('pengaduans', 'status', 'search'));
 }
 
     /**

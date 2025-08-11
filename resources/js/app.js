@@ -1,18 +1,30 @@
+// Langkah 1: Impor bootstrap (yang berisi Alpine.js) seperti biasa.
 import './bootstrap';
-// Fungsi untuk menerapkan animasi
-const applyAnimation = () => {
-    // Hapus kelas animasi lama jika ada (untuk re-trigger di Livewire)
-    document.body.classList.remove('animate-page-fade-in');
 
-    // Trik untuk memaksa browser me-render ulang sebelum menambahkan kelas baru
-    void document.body.offsetWidth;
+// Langkah 2: Bungkus semua logika animasi Anda di dalam event listener 'alpine:init'.
+// Event ini hanya akan berjalan SETELAH Alpine.js siap.
+document.addEventListener('alpine:init', () => {
 
-    // Tambahkan kelas untuk memicu animasi
-    document.body.classList.add('animate-page-fade-in');
-};
+    // Fungsi untuk menerapkan animasi
+    const applyAnimation = () => {
+        // Kita akan menargetkan tag <main> yang memiliki class animasi
+        const mainContent = document.querySelector('main.content-fade-in');
 
-// Jalankan animasi saat halaman pertama kali dimuat (untuk login, register, dll)
-document.addEventListener('DOMContentLoaded', applyAnimation);
+        if (mainContent) {
+            // Hapus kelas untuk me-reset animasi
+            mainContent.classList.remove('content-fade-in');
 
-// Jalankan lagi animasi setiap kali Livewire selesai menavigasi (untuk dashboard)
-document.addEventListener('livewire:navigated', applyAnimation);
+            // Trik untuk memaksa browser me-render ulang
+            void mainContent.offsetWidth;
+
+            // Tambahkan kembali kelas untuk memicu animasi
+            mainContent.classList.add('content-fade-in');
+        }
+    };
+
+    // Jalankan animasi saat halaman pertama kali dimuat
+    applyAnimation();
+
+    // Jalankan lagi animasi setiap kali Livewire selesai menavigasi
+    document.addEventListener('livewire:navigated', applyAnimation);
+});

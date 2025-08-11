@@ -18,7 +18,7 @@
             
             <div 
                 class="absolute inset-0 w-full h-full bg-cover bg-center" 
-                style="background-image: url('<?php echo e(asset('images/login-bg.jpg')); ?>'); filter: blur(2px); opacity: 0.9;">
+                style="background-image: url('<?php echo e(asset('images/1.jpg')); ?>')">
             </div>
 
             

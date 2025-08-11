@@ -10,10 +10,18 @@
     {{-- Menambahkan script AlpineJS Collapse untuk animasi --}}
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="antialiased bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
-    <div class="min-h-screen">
-        {{-- Menggunakan komponen navigasi yang sama dengan halaman utama --}}
+<body class="font-sans antialiased">
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        {{-- Menggunakan komponen navigasi --}}
         @include('components.layouts.navigation')
+
+        <header class="bg-white dark:bg-gray-800 shadow">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    {{ __('Basis Pengetahuan') }}
+                </h2>
+            </div>
+        </header>
 
         <main>
             <div class="py-12">
@@ -26,9 +34,7 @@
                                 <p class="mt-3 text-lg text-gray-600 dark:text-gray-400">Temukan panduan, tips, dan solusi untuk pertanyaan umum seputar UMKM.</p>
                             </div>
 
-                            {{-- Wrapper Alpine.js untuk state management accordion --}}
                             <div x-data="{ open: null }" class="space-y-4">
-                                {{-- Menggabungkan semua artikel (statis dan dinamis) ke dalam satu loop untuk tampilan accordion --}}
                                 @php
                                     $allArticles = [
                                         // Konten Statis
@@ -38,8 +44,10 @@
                                     ];
 
                                     // Menggabungkan artikel dinamis dari database
-                                    foreach ($articles as $article) {
-                                        $allArticles[] = ['id' => 'd' . $article->id, 'kategori' => $article->category . ' (Dari Admin)', 'judul' => $article->title, 'konten' => $article->content];
+                                    if (isset($articles)) {
+                                        foreach ($articles as $article) {
+                                            $allArticles[] = ['id' => 'd' . $article->id, 'kategori' => $article->category . ' (Dari Admin)', 'judul' => $article->title, 'konten' => $article->content];
+                                        }
                                     }
                                 @endphp
 
@@ -70,12 +78,12 @@
                                     </div>
                                 @endforelse
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+        
     </div>
 </body>
 </html>
