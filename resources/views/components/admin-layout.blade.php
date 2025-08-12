@@ -156,8 +156,9 @@
 
             <!-- Page Heading -->
             @if (isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                {{-- [FIXED] Menghapus border-b untuk menghilangkan garis --}}
+                <header class="bg-white dark:bg-gray-800">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
                         {{ $header }}
                     </div>
                 </header>
@@ -165,7 +166,11 @@
 
             <!-- Page Content -->
             <main class="content-fade-in">
-                {{ $slot }}
+                <div class="py-12">
+                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        {{ $slot }}
+                    </div>
+                </div>
             </main>
         </div>
 
