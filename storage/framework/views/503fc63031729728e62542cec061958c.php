@@ -1,13 +1,20 @@
+<?php if (isset($component)) { $__componentOriginale0f1cdd055772eb1d4a99981c240763e = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginale0f1cdd055772eb1d4a99981c240763e = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin-layout','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('admin-layout'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes([]); ?>
+     <?php $__env->slot('header', null, []); ?> 
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            <?php echo e(__('Admin Dashboard')); ?>
 
+        </h2>
+     <?php $__env->endSlot(); ?>
 
-<?php $__env->startSection('header'); ?>
-    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-        <?php echo e(__('Admin Dashboard')); ?>
-
-    </h2>
-<?php $__env->stopSection(); ?>
-
-<?php $__env->startSection('content'); ?>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6 mb-6">
@@ -59,9 +66,9 @@
             </div>
         </div>
     </div>
-<?php $__env->stopSection(); ?>
 
-<?php $__env->startPush('scripts'); ?>
+    
+    <?php $__env->startPush('scripts'); ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -80,7 +87,7 @@
                     backgroundColor: [
                         'rgba(59, 130, 246, 0.7)',  // blue-500
                         'rgba(234, 179, 8, 0.7)',   // yellow-500
-                        'rgba(34, 197, 94, 0.7)',  // green-500
+                        'rgba(34, 197, 94, 0.7)',   // green-500
                         'rgba(139, 92, 246, 0.7)', // violet-500
                         'rgba(239, 68, 68, 0.7)',   // red-500
                         'rgba(249, 115, 22, 0.7)'  // orange-500
@@ -108,5 +115,15 @@
             });
         });
     </script>
-<?php $__env->stopPush(); ?>
-<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>
+    <?php $__env->stopPush(); ?>
+ <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginale0f1cdd055772eb1d4a99981c240763e)): ?>
+<?php $attributes = $__attributesOriginale0f1cdd055772eb1d4a99981c240763e; ?>
+<?php unset($__attributesOriginale0f1cdd055772eb1d4a99981c240763e); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginale0f1cdd055772eb1d4a99981c240763e)): ?>
+<?php $component = $__componentOriginale0f1cdd055772eb1d4a99981c240763e; ?>
+<?php unset($__componentOriginale0f1cdd055772eb1d4a99981c240763e); ?>
+<?php endif; ?>
+<?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>

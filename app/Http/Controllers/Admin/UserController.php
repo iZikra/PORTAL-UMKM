@@ -8,15 +8,25 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * Menampilkan daftar semua pengguna yang terdaftar.
-     */
-    public function index()
-    {
-        // Ambil semua data pengguna, urutkan dari yang terbaru
-        $users = User::latest()->get();
+public function index(Request $request)
+{
+    $query = \App\Models\User::query();
 
-        // Kirim data ke view
-        return view('admin.users.index', compact('users'));
+    // [MODIFIED] Jadikan 'user' sebagai peran default jika tidak ada filter yang dipilih
+    $role = $request->input('role', 'user');
+    $query->where('role', $role);
+
+    // Pencarian berdasarkan nama atau email
+    if ($request->filled('search')) {
+        $searchTerm = $request->search;
+        $query->where(function ($q) use ($searchTerm) {
+            $q->where('name', 'like', "%{$searchTerm}%")
+              ->orWhere('email', 'like', "%{$searchTerm}%");
+        });
     }
+
+    $users = $query->paginate(10);
+    
+    return view('admin.users.index', compact('users'));
+}
 }   

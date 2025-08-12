@@ -20,8 +20,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'nama_pemilik_usaha',
         'nama_usaha',
-        // Tambahkan semua kolom baru di sini
         'nib',
         'sektor_usaha',
         'no_telp',
@@ -50,4 +50,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+    public function pengaduans()
+    {
+        return $this->hasMany(Pengaduan::class);
+    }
 }

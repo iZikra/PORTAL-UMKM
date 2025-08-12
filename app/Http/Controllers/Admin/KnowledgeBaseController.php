@@ -9,10 +9,10 @@ use Illuminate\Http\Request;
 class KnowledgeBaseController extends Controller
 {
     public function index()
-    {
-        $articles = KnowledgeBase::latest()->paginate(10);
-        return view('admin.knowledge-base.index', compact('articles'));
-    }
+{
+    $articles = \App\Models\KnowledgeBase::latest()->paginate(10);
+    return view('admin.knowledge-base.index', ['articles' => $articles]);
+}
 
     public function create()
     {

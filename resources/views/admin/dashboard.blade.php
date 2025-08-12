@@ -1,12 +1,10 @@
-@extends('layouts.admin')
+<x-admin-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Admin Dashboard') }}
+        </h2>
+    </x-slot>
 
-@section('header')
-    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-        {{ __('Admin Dashboard') }}
-    </h2>
-@endsection
-
-@section('content')
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6 mb-6">
@@ -41,7 +39,7 @@
                     <p class="mt-1 text-3xl font-semibold text-green-900 dark:text-green-200">{{ $pengaduanSelesai }}</p>
                 </a>
 
-                {{-- [FIXED] Mengembalikan kartu Ditolak dengan styling yang benar --}}
+                {{-- Kartu Ditolak --}}
                 <a href="{{ route('admin.pengaduan.index', ['status' => 'ditolak']) }}" class="bg-red-100 dark:bg-red-900/50 overflow-hidden shadow-sm sm:rounded-lg p-6 hover:bg-red-200/80 dark:hover:bg-red-900/80 transition">
                     <h3 class="text-lg font-medium text-red-800 dark:text-red-300">Ditolak</h3>
                     <p class="mt-1 text-3xl font-semibold text-red-900 dark:text-red-200">{{ $pengaduanDitolak }}</p>
@@ -58,9 +56,9 @@
             </div>
         </div>
     </div>
-@endsection
 
-@push('scripts')
+    {{-- [FIXED] Memindahkan @push ke dalam komponen layout --}}
+    @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -79,7 +77,7 @@
                     backgroundColor: [
                         'rgba(59, 130, 246, 0.7)',  // blue-500
                         'rgba(234, 179, 8, 0.7)',   // yellow-500
-                        'rgba(34, 197, 94, 0.7)',  // green-500
+                        'rgba(34, 197, 94, 0.7)',   // green-500
                         'rgba(139, 92, 246, 0.7)', // violet-500
                         'rgba(239, 68, 68, 0.7)',   // red-500
                         'rgba(249, 115, 22, 0.7)'  // orange-500
@@ -107,4 +105,5 @@
             });
         });
     </script>
-@endpush
+    @endpush
+</x-admin-layout>
