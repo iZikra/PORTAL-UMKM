@@ -2,18 +2,22 @@
     "version": 2,
     "builds": [
         {
-            "src": "public/index.php",
+            "src": "/public/**/*",
+            "use": "@vercel/static"
+        },
+        {
+            "src": "/api/index.php",
             "use": "@vercel/php"
         }
     ],
-    "routes": [
+    "rewrites": [
         {
-            "src": "/(css|js|images|storage)/(.*)",
-            "dest": "/public/$1/$2"
+            "source": "/(css|js|images|storage|favicon.ico)(.*)",
+            "destination": "/public/$1$2"
         },
         {
-            "src": "/(.*)",
-            "dest": "/public/index.php"
+            "source": "/(.*)",
+            "destination": "/api/index.php"
         }
     ]
 }
