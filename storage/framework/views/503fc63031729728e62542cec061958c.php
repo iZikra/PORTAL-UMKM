@@ -28,7 +28,7 @@
                 </a>
 
                 
-                <a href="<?php echo e(route('admin.pengaduan.index')); ?>" class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                <a href="<?php echo e(route('admin.pengaduan.index')); ?>" class="bg-orange-100 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                     <h3 class="text-lg font-medium text-gray-500 dark:text-gray-400">Total Pengaduan</h3>
                     <p class="mt-1 text-3xl font-semibold text-gray-900 dark:text-white"><?php echo e($totalPengaduan); ?></p>
                 </a>

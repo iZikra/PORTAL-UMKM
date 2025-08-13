@@ -21,36 +21,40 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
 
-                    
                     <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 md:space-x-4 mb-6">
                         
-                        <div x-data="{ open: false }" @mouseleave="open = false" class="relative inline-block text-left w-full md:w-auto">
+                        
+                        <div x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" class="relative inline-block text-left w-full md:w-auto">
+                            
                             <div>
-                                <button @mouseenter="open = true" type="button" class="inline-flex justify-between w-full rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-indigo-500" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                                <button type="button" class="inline-flex justify-between w-full rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-indigo-500">
                                     <span>
                                         <?php echo e(request('status') ? 'Status: ' . request('status') : 'Filter Berdasarkan Status'); ?>
 
                                     </span>
-                                    <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                         <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                                     </svg>
                                 </button>
                             </div>
-                            <div x-show="open" 
-                                 x-transition:enter="transition ease-out duration-100"
-                                 x-transition:enter-start="transform opacity-0 scale-95"
-                                 x-transition:enter-end="transform opacity-100 scale-100"
-                                 x-transition:leave="transition ease-in duration-75"
-                                 x-transition:leave-start="transform opacity-100 scale-100"
-                                 x-transition:leave-end="transform opacity-0 scale-95"
-                                 class="origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 focus:outline-none z-10" 
-                                 role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
-                                <div class="py-1" role="none">
-                                    <a href="<?php echo e(route('admin.pengaduan.index')); ?>" class="text-gray-700 dark:text-gray-200 block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600" role="menuitem" tabindex="-1">Semua</a>
-                                    <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'Baru'])); ?>" class="text-gray-700 dark:text-gray-200 block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600" role="menuitem" tabindex="-1">Baru</a>
-                                    <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'Diproses'])); ?>" class="text-gray-700 dark:text-gray-200 block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600" role="menuitem" tabindex="-1">Diproses</a>
-                                    <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'Selesai'])); ?>" class="text-gray-700 dark:text-gray-200 block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600" role="menuitem" tabindex="-1">Selesai</a>
-                                    <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'Ditolak'])); ?>" class="text-gray-700 dark:text-gray-200 block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600" role="menuitem" tabindex="-1">Ditolak</a>
+
+                            
+                            <div 
+                                x-show="open" 
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="transform opacity-0 scale-95"
+                                x-transition:enter-end="transform opacity-100 scale-100"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="transform opacity-100 scale-100"
+                                x-transition:leave-end="transform opacity-0 scale-95"
+                                class="origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 focus:outline-none z-10" 
+                                style="display: none;">
+                                <div class="py-1">
+                                    <a href="<?php echo e(route('admin.pengaduan.index')); ?>" class="text-gray-700 dark:text-gray-200 block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">Semua</a>
+                                    <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'Baru'])); ?>" class="text-gray-700 dark:text-gray-200 block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">Baru</a>
+                                    <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'Diproses'])); ?>" class="text-gray-700 dark:text-gray-200 block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">Diproses</a>
+                                    <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'Selesai'])); ?>" class="text-gray-700 dark:text-gray-200 block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">Selesai</a>
+                                    <a href="<?php echo e(route('admin.pengaduan.index', ['status' => 'Ditolak'])); ?>" class="text-gray-700 dark:text-gray-200 block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-600">Ditolak</a>
                                 </div>
                             </div>
                         </div>
@@ -70,7 +74,7 @@
                     
                     <div class="overflow-x-auto border border-gray-200 dark:border-gray-700 rounded-lg">
                         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead class="bg-gray-50 dark:bg-gray-700/50">
+                           <thead class="bg-gray-50 dark:bg-gray-700/50">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">No</th>
                                     <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">Waktu Lapor</th>
@@ -112,7 +116,7 @@
                                     <tr>
                                         <td colspan="6" class="px-6 py-16 text-center text-gray-500 dark:text-gray-400">
                                             <div class="flex flex-col items-center">
-                                                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                                                 <h3 class="mt-2 text-lg font-medium">Tidak Ada Pengaduan</h3>
                                                 <p class="mt-1 text-sm">Tidak ada data pengaduan yang cocok dengan filter yang Anda pilih.</p>
                                             </div>
@@ -140,5 +144,4 @@
 <?php if (isset($__componentOriginale0f1cdd055772eb1d4a99981c240763e)): ?>
 <?php $component = $__componentOriginale0f1cdd055772eb1d4a99981c240763e; ?>
 <?php unset($__componentOriginale0f1cdd055772eb1d4a99981c240763e); ?>
-<?php endif; ?>
-<?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/admin/pengaduan/index.blade.php ENDPATH**/ ?>
+<?php endif; ?><?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/admin/pengaduan/index.blade.php ENDPATH**/ ?>

@@ -40,7 +40,7 @@
                 <h1 class="text-5xl font-semibold text-white">Selamat Datang di Portal UMKM</h1>
                 <p class="mt-4 text-lg text-gray-200">Platform terpadu untuk membantu, mendukung, dan memajukan Usaha Mikro, Kecil, dan Menengah di seluruh Indonesia.</p>
                 <div class="mt-8">
-                    <a href="{{ route('register') }}" class="bg-indigo-500 text-white hover:bg-indigo-600 px-8 py-3 rounded-full text-lg font-semibold transition duration-300">Mulai Sekarang</a>
+                    <a href="{{ route('register') }}" class="bg-indigo-500 text-white hover:bg-indigo-600 px-8 py-3 rounded-full text-lg font-semibold transition duration-300">Daftar Sekarang</a>
                 </div>
             </div>
         </div>
