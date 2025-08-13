@@ -1,46 +1,46 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
-    <title>{{ config('app.name', 'Portal UMKM') }} - Layanan Pengaduan UMKM</title>
+    <title><?php echo e(config('app.name', 'Portal UMKM')); ?> - Layanan Pengaduan UMKM</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
 </head>
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
         
-        @include('components.layouts.navigation')
+        <?php echo $__env->make('components.layouts.navigation', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
         <!-- Konten Utama -->
         <main>
             <!-- Hero Section -->
-            {{-- [FIX] Mengganti background gambar gelap dengan gradient yang lebih cerah --}}
-            {{-- Kode yang Sudah Diperbaiki --}}
-{{-- GANTI BAGIAN SECTION LAMA DENGAN YANG INI --}}
+            
+            
+
 <section class="relative flex content-center items-center justify-center" style="min-height: 90vh;">
-    {{-- Latar Belakang Gambar --}}
-    <div class="absolute top-0 h-full w-full bg-cover bg-bottom" style="background-image: url('{{ asset('images/3.jpg') }}');">
+    
+    <div class="absolute top-0 h-full w-full bg-cover bg-bottom" style="background-image: url('<?php echo e(asset('images/3.jpg')); ?>');">
     </div>
     
-    {{-- Lapisan Gelap (Overlay) untuk Kontras --}}
+    
     <div class="absolute top-0 h-full w-full bg-black opacity-50"></div>
 
-    {{-- Konten Teks (diambil dari kode asli Anda) --}}
+    
     <div class="container relative mx-auto">
         <div class="flex flex-wrap items-center">
             <div class="ml-auto mr-auto w-full px-4 text-center lg:w-8/12">
                 <h1 class="text-5xl font-semibold text-white">Selamat Datang di Portal UMKM</h1>
                 <p class="mt-4 text-lg text-gray-200">Platform terpadu untuk membantu, mendukung, dan memajukan Usaha Mikro, Kecil, dan Menengah di seluruh Indonesia.</p>
                 <div class="mt-8">
-                    <a href="{{ route('register') }}" class="bg-indigo-500 text-white hover:bg-indigo-600 px-8 py-3 rounded-full text-lg font-semibold transition duration-300">Mulai Sekarang</a>
+                    <a href="<?php echo e(route('register')); ?>" class="bg-indigo-500 text-white hover:bg-indigo-600 px-8 py-3 rounded-full text-lg font-semibold transition duration-300">Mulai Sekarang</a>
                 </div>
             </div>
         </div>
@@ -98,9 +98,10 @@
         <!-- Footer -->
         <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-500 dark:text-gray-400">
-                <p>&copy; {{ date('Y') }} {{ config('app.name', 'Portal UMKM') }}. All Rights Reserved.</p>
+                <p>&copy; <?php echo e(date('Y')); ?> <?php echo e(config('app.name', 'Portal UMKM')); ?>. All Rights Reserved.</p>
             </div>
         </footer>
     </div>
 </body>
 </html>
+<?php /**PATH C:\Users\GF 63\proyek-multi-auth\resources\views/welcome.blade.php ENDPATH**/ ?>

@@ -64,4 +64,10 @@ class KnowledgeBaseController extends Controller
         return redirect()->route('admin.knowledge-base.index')
                          ->with('success', 'Artikel berhasil dihapus.');
     }
+        public function showPublic()
+    {
+        $articles = KnowledgeBase::latest()->get();
+
+        return view('knowledge_base_public', compact('articles'));
+    }
 }

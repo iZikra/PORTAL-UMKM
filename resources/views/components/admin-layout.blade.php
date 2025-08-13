@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 
-        <!-- Scripts -->
+        <script defer src="https://unpkg.com/@popperjs/core@2"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         
         <!-- Styles -->
