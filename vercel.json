@@ -1,23 +1,35 @@
 {
     "version": 2,
+    "framework": null,
     "builds": [
         {
-            "src": "/public/**/*",
-            "use": "@vercel/static"
+            "src": "resources/js/app.js",
+            "use": "@vercel/static-build",
+            "config": {
+                "buildCommand": "npm install && npm run build"
+            }
         },
         {
-            "src": "/api/index.php",
+            "src": "public/index.php",
             "use": "@vercel/php"
         }
     ],
-    "rewrites": [
+    "routes": [
         {
-            "source": "/(css|js|images|storage|favicon.ico)(.*)",
-            "destination": "/public/$1$2"
+            "src": "/build/(.*)",
+            "dest": "/public/build/$1"
         },
         {
-            "source": "/(.*)",
-            "destination": "/api/index.php"
+            "src": "/storage/(.*)",
+            "dest": "/public/storage/$1"
+        },
+        {
+            "handle": "filesystem"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/public/index.php"
         }
-    ]
+    ],
+    "outputDirectory": "public"
 }
