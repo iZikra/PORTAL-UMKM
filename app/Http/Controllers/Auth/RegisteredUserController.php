@@ -47,7 +47,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'nama_usaha' => $request->nama_usaha,
-            'nib' => $request->nib,
+            'nib' => 'required|string|max:13|unique:users,nib',
             'sektor_usaha' => $request->sektor_usaha,
             'no_telp' => $request->no_telp,
             'alamat_jalan' => $request->alamat_jalan,
