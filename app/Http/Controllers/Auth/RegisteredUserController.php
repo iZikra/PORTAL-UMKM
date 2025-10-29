@@ -47,7 +47,8 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'nama_usaha' => $request->nama_usaha,
-            'nib' => 'required|string|max:13|unique:users,nib',
+            // PERBAIKAN: Mengambil nilai nib dari request, bukan string validasi
+            'nib' => $request->nib,
             'sektor_usaha' => $request->sektor_usaha,
             'no_telp' => $request->no_telp,
             'alamat_jalan' => $request->alamat_jalan,
@@ -56,12 +57,15 @@ class RegisteredUserController extends Controller
             'alamat_kota' => $request->alamat_kota,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            // Secara default role akan menjadi 'user' sesuai definisi di migration
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
+        // Mengarahkan ke RouteServiceProvider::HOME yang biasanya '/dashboard'
+        // Middleware akan menangani pengalihan ke dashboard user atau admin
         return redirect(RouteServiceProvider::HOME);
     }
 }
